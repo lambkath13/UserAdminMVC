@@ -1,0 +1,13 @@
+.idea
+**/bin
+**/obj
+**/.env
+.vs
+.vscode
+out
+.DS_Store
+
+**/*.user
+**/*.jpg
+**/*.png
+**/*.pdf
