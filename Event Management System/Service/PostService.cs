@@ -13,12 +13,12 @@ public class PostService:IPostService
         _postRepository = postRepository;
     }
 
-    public async Task<IEnumerable<PostDto>> GetAllPostsAsync()
+    public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
         return await _postRepository.GetAllPostAsync();
     }
 
-    public async Task<PostDto?> GetPostByIdAsync(int id)
+    public async Task<PostDto?> GetByIdAsync(int id)
     {
         return await _postRepository.GetPostByIdAsync(id);
     }
@@ -33,7 +33,7 @@ public class PostService:IPostService
         await _postRepository.UpdatePostAsync(postDto);
     }
 
-    public async Task DeletePostAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         await _postRepository.DeletePostAsync(id);
     }

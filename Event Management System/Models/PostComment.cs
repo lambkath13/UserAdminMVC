@@ -6,13 +6,12 @@ namespace Event_Management_System.Models;
 public class PostComment
 {
     [Key]
-    public int PostCommentId { get; set; }
+    public int Id { get; set; }
 
     public int? PostId { get; set; }
     public  Post? Post { get; set; }
     
-    [MaxLength(20)]
-    public required string UserId { get; set; }
+    public required Guid UserId { get; set; }
 
     public required User User { get; set; }
 

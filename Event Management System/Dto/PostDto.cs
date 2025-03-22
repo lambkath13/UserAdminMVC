@@ -3,8 +3,8 @@
 public class PostDto
 {
     public int PostId { get; set; }
-    public string Content { get; set; } = null!;
-    public string ImageUrl { get; set; } = null!;
+    public string Content { get; set; }
+    public string ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string UserId { get; set; } = null!;
+    public string UserId { get; set; }
 }

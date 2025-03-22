@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Event_Management_System.DTO;
+using Event_Management_System.Service;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-public class HomeController : Controller
+public class HomeController(IEventService eventService, IMapper mapper) : Controller
 {
-    public IActionResult Index()
+    public async  Task<IActionResult> Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
+        var events = await eventService.GetAllEventsAsync();
+        return View(mapper.Map<List<EventDto>>(events));
     }
 }

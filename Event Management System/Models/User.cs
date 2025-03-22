@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Event_Management_System.Models
 {
-    public class User:IdentityUser
+    public class User : IdentityUser<Guid>
     {
-        [Key]
-        [Required]
-        [MaxLength(20)]
         public required string PassportId { get; set; }
 
         [Required]

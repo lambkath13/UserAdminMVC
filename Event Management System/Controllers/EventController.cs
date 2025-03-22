@@ -5,46 +5,41 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-[ApiController]
-[Route("api/events")]
-public class EventController : ControllerBase
+public class EventController(IEventService eventService, IMapper mapper) : Controller
 {
-    private readonly IEventService _eventService;
-    private readonly IMapper _mapper;
-
-    public EventController(IEventService eventService, IMapper mapper)
-    {
-        _eventService = eventService;
-        _mapper = mapper;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAllEvents()
     {
-        var events = await _eventService.GetAllEventsAsync();
-        return Ok(_mapper.Map<IEnumerable<EventDto>>(events));
+        var events = await eventService.GetAllEventsAsync();
+        return Ok(mapper.Map<IEnumerable<EventDto>>(events));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEventById(int id)
     {
-        var eventEntity = await _eventService.GetEventByIdAsync(id);
+        var eventEntity = await eventService.GetEventByIdAsync(id);
         if (eventEntity == null)
             return NotFound();
 
-        return Ok(_mapper.Map<EventDto>(eventEntity));
+        return Ok(mapper.Map<EventDto>(eventEntity));
     }
 
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
     [HttpPost]
-    public async Task<IActionResult> CreateEvent([FromBody] CreateEventDto createEventDto)
+    public async Task<IActionResult> Create([FromBody] CreateEventDto createEventDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var eventEntity = _mapper.Map<EventDto>(createEventDto);
-        await _eventService.AddEventAsync(eventEntity);
+        var eventEntity = mapper.Map<EventDto>(createEventDto);
+        await eventService.AddEventAsync(eventEntity);
 
-        return CreatedAtAction(nameof(GetEventById), new { id = eventEntity.EventId }, _mapper.Map<EventDto>(eventEntity));
+        return CreatedAtAction(nameof(GetEventById), new { id = eventEntity.EventId }, mapper.Map<EventDto>(eventEntity));
     }
 
     [HttpPut("{id}")]
@@ -53,19 +48,19 @@ public class EventController : ControllerBase
         if (!ModelState.IsValid || id != eventDto.EventId)
             return BadRequest(ModelState);
 
-        var eventEntity = _mapper.Map<EventDto>(eventDto);
-        await _eventService.UpdateEventAsync(eventEntity);
+        var eventEntity = mapper.Map<EventDto>(eventDto);
+        await eventService.UpdateEventAsync(eventEntity);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-        var eventExists = await _eventService.GetEventByIdAsync(id);
+        var eventExists = await eventService.GetEventByIdAsync(id);
         if (eventExists == null)
             return NotFound();
 
-        await _eventService.DeleteEventAsync(id);
+        await eventService.DeleteEventAsync(id);
         return NoContent();
     }
 }

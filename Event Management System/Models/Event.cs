@@ -6,7 +6,7 @@ namespace Event_Management_System.Models
     public class Event
     {
         [Key]
-        public int EventId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -25,9 +25,8 @@ namespace Event_Management_System.Models
         public string? Location { get; set; }
 
         [Required]
-        [MaxLength(20)]
-        public string OrganizerId { get; set; } = null!;
-        public User Organizer { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public User User { get; set; }
 
         public List<EventFeedback> EventFeedbacks { get; set; } = null!;
     }

@@ -6,7 +6,7 @@ namespace Event_Management_System.Models;
 public class Post
 {
     [Key]
-    public int PostId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(500)]
@@ -17,14 +17,9 @@ public class Post
 
     [Required]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [MaxLength(20)]
-    public string UserId { get; set; } = null!;
-
+    
+    public Guid UserId { get; set; }
     public User User { get; set; } = null!;
     
     public List<PostComment> PostComments { get; set; } = null!;
-    public List<Image> Images { get; set; } = null!;
-
-
 }

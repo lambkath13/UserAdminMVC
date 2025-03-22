@@ -6,20 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-[ApiController]
-[Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController(IUserRepository userRepository, IMapper mapper) : Controller
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
 
-    public AuthController(IUserRepository userRepository, IMapper mapper)
+    [HttpGet]
+    public IActionResult Register()
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
+        return View();
     }
     
-    [HttpPost("register")]
+    [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
     {
         if (!ModelState.IsValid)
@@ -38,14 +35,20 @@ public class AuthController : ControllerBase
             Role = registerDto.Role
         };
 
-        var result = await _userRepository.AddUserAsync(user, registerDto.Password);
+        var result = await userRepository.AddUserAsync(user, registerDto.Password);
         return result.Succeeded ? Ok("User registered successfully") : BadRequest(result.Errors);
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] string passportId, string password)
+    [HttpGet]
+    public IActionResult Login()
     {
-        var user = await _userRepository.AuthenticateAsync(passportId, password);
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginRequest loginRequest)
+    {
+        var user = await userRepository.AuthenticateAsync(loginRequest.PassportId, loginRequest.Password);
         if (user == null) return Unauthorized("Invalid credentials");
         return Ok(new { message = "Login successful", user });
     }

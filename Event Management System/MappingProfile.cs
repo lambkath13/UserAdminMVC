@@ -22,13 +22,10 @@ public class MappingProfile : Profile
         CreateMap<EventRegistration, EventRegistrationDto>();
 
         // Post
+        CreateMap<PostDto, Post>();
         CreateMap<Post, PostDto>();
-        CreateMap<CreatePostDto, Post>();
 
         // Post Comment
         CreateMap<PostComment, PostCommentDto>();
-
-        // Image
-        CreateMap<Image, ImageDto>();
     }
 }

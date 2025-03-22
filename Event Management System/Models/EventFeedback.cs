@@ -6,7 +6,7 @@ namespace Event_Management_System.Models;
 public class EventFeedback
 {
     [Key]
-    public int EventFeedbackId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public int EventId { get; set; }
@@ -14,8 +14,7 @@ public class EventFeedback
     public Event Event { get; set; } = null!;
 
     [Required]
-    [MaxLength(20)]
-    public string UserId { get; set; } = null!;
+    public Guid UserId { get; set; }
 
     public User User { get; set; } = null!;
 

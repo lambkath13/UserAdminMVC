@@ -24,11 +24,11 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.Event", b =>
                 {
-                    b.Property<int>("EventId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -42,11 +42,6 @@ namespace Event_Management_System.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("OrganizerId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -55,20 +50,23 @@ namespace Event_Management_System.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("EventId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("OrganizerId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.EventFeedback", b =>
                 {
-                    b.Property<int>("EventFeedbackId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventFeedbackId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -84,12 +82,10 @@ namespace Event_Management_System.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("EventFeedbackId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
@@ -100,11 +96,11 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.EventRegistration", b =>
                 {
-                    b.Property<int>("EventRegistrationId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventRegistrationId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
@@ -112,12 +108,10 @@ namespace Event_Management_System.Migrations
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("EventRegistrationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
@@ -126,49 +120,13 @@ namespace Event_Management_System.Migrations
                     b.ToTable("EventRegistrations");
                 });
 
-            modelBuilder.Entity("Event_Management_System.Models.Image", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("Event_Management_System.Models.LoginRequest", b =>
-                {
-                    b.Property<string>("PassportId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AdminPassword")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PassportId");
-
-                    b.ToTable("LoginRequests");
-                });
-
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -183,12 +141,10 @@ namespace Event_Management_System.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -197,11 +153,11 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.PostComment", b =>
                 {
-                    b.Property<int>("PostCommentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostCommentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -214,12 +170,10 @@ namespace Event_Management_System.Migrations
                     b.Property<int?>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PostCommentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PostId");
 
@@ -230,9 +184,9 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.User", b =>
                 {
-                    b.Property<string>("PassportId")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -252,9 +206,6 @@ namespace Event_Management_System.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsFirstAdmin")
                         .HasColumnType("bit");
 
@@ -273,6 +224,10 @@ namespace Event_Management_System.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PassportId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
@@ -296,20 +251,20 @@ namespace Event_Management_System.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PassportId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.Event", b =>
                 {
-                    b.HasOne("Event_Management_System.Models.User", "Organizer")
+                    b.HasOne("Event_Management_System.Models.User", "User")
                         .WithMany("Events")
-                        .HasForeignKey("OrganizerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Organizer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.EventFeedback", b =>
@@ -350,16 +305,6 @@ namespace Event_Management_System.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Event_Management_System.Models.Image", b =>
-                {
-                    b.HasOne("Event_Management_System.Models.Post", "Post")
-                        .WithMany("Images")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
                 {
                     b.HasOne("Event_Management_System.Models.User", "User")
@@ -396,8 +341,6 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("PostComments");
                 });
 

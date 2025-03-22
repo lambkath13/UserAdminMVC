@@ -14,8 +14,6 @@ public class AppDbContext : DbContext
     public DbSet<EventFeedback> EventFeedbacks { get; set; } 
     public DbSet<Post> Posts { get; set; } 
     public DbSet<PostComment> PostComments { get; set; } 
-    public DbSet<Image> Images { get; set; } 
-    public DbSet<LoginRequest> LoginRequests { get; set; }
     public DbSet<EventRegistration> EventRegistrations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,9 +22,9 @@ public class AppDbContext : DbContext
 
         // Указываем, что у Event один Organizer (User)
         modelBuilder.Entity<Event>()
-            .HasOne(e => e.Organizer)
+            .HasOne(e => e.User)
             .WithMany(u => u.Events)
-            .HasForeignKey(e => e.OrganizerId)
+            .HasForeignKey(e => e.UserId)
             .OnDelete(DeleteBehavior.Restrict); // Запрещаем каскадное удаление
 
         // Связь между EventFeedback и User
@@ -63,12 +61,5 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(pc => pc.UserId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // Связь между Image и Post
-        modelBuilder.Entity<Image>()
-            .HasOne(i => i.Post)
-            .WithMany(p => p.Images)
-            .HasForeignKey(i => i.PostId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }
