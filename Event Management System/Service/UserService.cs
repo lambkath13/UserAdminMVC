@@ -17,7 +17,7 @@ public class UserService : IUserService
         _signInManager = signInManager;
     }
 
-    public async Task<IdentityResult> RegisterUserAsync(UserDto userDto, string password)
+    public async Task<IdentityResult> RegisterAsync(UserDto userDto, string password)
     {
         var existingUser = await _userManager.FindByNameAsync(userDto.PassportId);
         if (existingUser != null)
@@ -44,19 +44,19 @@ public class UserService : IUserService
         return result.Succeeded ? new UserDto { PassportId = user.PassportId, Name = user.Name } : null;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
         var users = _userManager.Users.ToList();
         return users.Select(user => new UserDto { PassportId = user.PassportId, Name = user.Name });
     }
 
-    public async Task<UserDto?> GetUserByIdAsync(string passportId)
+    public async Task<UserDto?> GetByIdAsync(string passportId)
     {
         var user = await _userManager.FindByNameAsync(passportId);
         return user != null ? new UserDto { PassportId = user.PassportId, Name = user.Name } : null;
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(UserDto userDto)
+    public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
         var user = await _userManager.FindByNameAsync(userDto.PassportId);
         if (user == null) return IdentityResult.Failed(new IdentityError { Description = "User not found." });
@@ -65,7 +65,7 @@ public class UserService : IUserService
         return await _userManager.UpdateAsync(user);
     }
 
-    public async Task<IdentityResult> DeleteUserAsync(string passportId)
+    public async Task<IdentityResult> DeleteAsync(string passportId)
     {
         var user = await _userManager.FindByNameAsync(passportId);
         if (user == null) return IdentityResult.Failed(new IdentityError { Description = "User not found." });

@@ -21,14 +21,14 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userService.GetAllUsersAsync();
+        var users = await _userService.GetAllAsync();
         return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
     }
 
     [HttpGet("{passportId}")]
     public async Task<IActionResult> GetUserById(string passportId)
     {
-        var userEntity = await _userService.GetUserByIdAsync(passportId);
+        var userEntity = await _userService.GetByIdAsync(passportId);
         if (userEntity == null)
             return NotFound();
         
@@ -42,18 +42,18 @@ public class UserController : ControllerBase
             return BadRequest(ModelState);
 
         var userEntity = _mapper.Map<UserDto>(userDto);
-        await _userService.UpdateUserAsync(userEntity);
+        await _userService.UpdateAsync(userEntity);
         return NoContent();
     }
 
     [HttpDelete("{passportId}")]
     public async Task<IActionResult> DeleteUser(string passportId)
     {
-        var userEntity = await _userService.GetUserByIdAsync(passportId);
+        var userEntity = await _userService.GetByIdAsync(passportId);
         if (userEntity == null)
             return NotFound();
             
-        await _userService.DeleteUserAsync(passportId);
+        await _userService.DeleteAsync(passportId);
         return NoContent();
     }
 }

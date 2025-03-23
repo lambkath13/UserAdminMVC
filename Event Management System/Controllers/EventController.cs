@@ -10,14 +10,14 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
     [HttpGet]
     public async Task<IActionResult> GetAllEvents()
     {
-        var events = await eventService.GetAllEventsAsync();
+        var events = await eventService.GetAllAsync();
         return Ok(mapper.Map<IEnumerable<EventDto>>(events));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEventById(int id)
     {
-        var eventEntity = await eventService.GetEventByIdAsync(id);
+        var eventEntity = await eventService.GetByIdAsync(id);
         if (eventEntity == null)
             return NotFound();
 
@@ -37,7 +37,7 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
             return BadRequest(ModelState);
 
         var eventEntity = mapper.Map<EventDto>(createEventDto);
-        await eventService.AddEventAsync(eventEntity);
+        await eventService.AddAsync(eventEntity);
 
         return CreatedAtAction(nameof(GetEventById), new { id = eventEntity.EventId }, mapper.Map<EventDto>(eventEntity));
     }
@@ -49,18 +49,18 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
             return BadRequest(ModelState);
 
         var eventEntity = mapper.Map<EventDto>(eventDto);
-        await eventService.UpdateEventAsync(eventEntity);
+        await eventService.UpdateAsync(eventEntity);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(int id)
     {
-        var eventExists = await eventService.GetEventByIdAsync(id);
+        var eventExists = await eventService.GetByIdAsync(id);
         if (eventExists == null)
             return NotFound();
 
-        await eventService.DeleteEventAsync(id);
+        await eventService.DeleteAsync(id);
         return NoContent();
     }
 }

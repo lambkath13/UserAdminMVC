@@ -12,28 +12,28 @@ public class EventService:IEventService
         _eventRepository = eventRepository;
     }
 
-    public async Task<IEnumerable<EventDto>> GetAllEventsAsync()
+    public async Task<IEnumerable<EventDto>> GetAllAsync()
     {
-        return await _eventRepository.GetAllEventsAsync();
+        return await _eventRepository.GetAllAsync();
     }
 
-    public async Task<EventDto?> GetEventByIdAsync(int id)
+    public async Task<EventDto?> GetByIdAsync(int id)
     {
-        return await _eventRepository.GetEventByIdAsync(id);
+        return await _eventRepository.GetByIdAsync(id);
     }
 
-    public async Task AddEventAsync(EventDto eventDto)
+    public async Task AddAsync(EventDto eventDto)
     {
-        await _eventRepository.AddEventAsync(eventDto);
+        await _eventRepository.AddAsync(eventDto);
     }
 
-    public async Task UpdateEventAsync(EventDto eventDto)
+    public async Task UpdateAsync(EventDto eventDto)
     {
-        await _eventRepository.UpdateEventAsync(eventDto);
+        await _eventRepository.UpdateAsync(eventDto);
     }
 
-    public async Task DeleteEventAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        await _eventRepository.DeleteEventAsync(id);
+        await _eventRepository.DeleteAsync(id);
     }
 }

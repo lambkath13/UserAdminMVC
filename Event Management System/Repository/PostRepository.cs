@@ -17,33 +17,33 @@ public class PostRepository:IPostRepository
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PostDto>> GetAllPostAsync()
+    public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
         var posts = await _context.Posts.ToListAsync();
         return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
-    public async Task<PostDto?> GetPostByIdAsync(int id)
+    public async Task<PostDto?> GetByIdAsync(int id)
     {
         var posts = await _context.Posts.FindAsync(id);
         return _mapper.Map<PostDto?>(posts);
     }
 
-    public async Task AddPostAsync(PostDto postDto)
+    public async Task AddAsync(PostDto postDto)
     {
         var postEntity = _mapper.Map<Post>(postDto);
         await _context.Posts.AddAsync(postEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdatePostAsync(PostDto postDto)
+    public async Task UpdateAsync(PostDto postDto)
     {
         var postEntity = _mapper.Map<Post>(postDto);
         _context.Posts.Update(postEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeletePostAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var postEntity = await _context.Posts.FindAsync(id);
         if (postEntity != null)

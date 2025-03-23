@@ -19,31 +19,31 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
         var users = await _userManager.Users.ToListAsync();
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
-    public async Task<UserDto?> GetUserByIdAsync(string passportId)
+    public async Task<UserDto?> GetByIdAsync(string passportId)
     {
         var user = await _userManager.FindByNameAsync(passportId);
         return _mapper.Map<UserDto?>(user);
     }
 
-    public async Task<IdentityResult> AddUserAsync(UserDto userDto, string password)
+    public async Task<IdentityResult> AddAsync(UserDto userDto, string password)
     {
         var user = _mapper.Map<User>(userDto);
         return await _userManager.CreateAsync(user, password);
     }
 
-    public async Task<IdentityResult> UpdateUserAsync(UserDto userDto)
+    public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
         return await _userManager.UpdateAsync(user);
     }
 
-    public async Task<IdentityResult> DeleteUserAsync(string passportId)
+    public async Task<IdentityResult> DeleteAsync(string passportId)
     {
         var user = await _userManager.FindByNameAsync(passportId);
         if (user == null) return IdentityResult.Failed();

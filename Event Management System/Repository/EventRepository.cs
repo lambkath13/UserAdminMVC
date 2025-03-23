@@ -17,32 +17,32 @@ public class EventRepository : IEventRepository
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<EventDto>> GetAllEventsAsync()
+    public async Task<IEnumerable<EventDto>> GetAllAsync()
     {
         var events = await _context.Events.ToListAsync();
         return _mapper.Map<IEnumerable<EventDto>>(events);
     }
 
-    public async Task<EventDto?> GetEventByIdAsync(int id)
+    public async Task<EventDto?> GetByIdAsync(int id)
     {
         var eventEntity = await _context.Events.FindAsync(id);
         return _mapper.Map<EventDto?>(eventEntity);
     }
-    public async Task AddEventAsync(EventDto eventDto)
+    public async Task AddAsync(EventDto eventDto)
     {
         var eventEntity = _mapper.Map<Event>(eventDto);
         await _context.Events.AddAsync(eventEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateEventAsync(EventDto eventDto)
+    public async Task UpdateAsync(EventDto eventDto)
     {
         var eventEntity = _mapper.Map<Event>(eventDto);
         _context.Events.Update(eventEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteEventAsync(int id)
+    public async Task DeleteAsync(int id)
     {
         var eventEntity = await _context.Events.FindAsync(id);
         if (eventEntity != null)

@@ -40,7 +40,7 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await postService.AddPostAsync(new PostDto()
+        await postService.AddAsync(new PostDto()
         {
             UserId = createPostDto.UserId,
             Content = createPostDto.Content,
@@ -58,7 +58,7 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
             return BadRequest(ModelState);
 
         var postEntity = mapper.Map<PostDto>(postDto);
-        await postService.UpdatePostAsync(postEntity);
+        await postService.UpdateAsync(postEntity);
         return NoContent();
     }
 

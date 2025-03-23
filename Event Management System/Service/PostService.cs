@@ -15,26 +15,26 @@ public class PostService:IPostService
 
     public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
-        return await _postRepository.GetAllPostAsync();
+        return await _postRepository.GetAllAsync();
     }
 
     public async Task<PostDto?> GetByIdAsync(int id)
     {
-        return await _postRepository.GetPostByIdAsync(id);
+        return await _postRepository.GetByIdAsync(id);
     }
 
-    public async Task AddPostAsync(PostDto postDto)
+    public async Task AddAsync(PostDto postDto)
     {
-        await _postRepository.AddPostAsync(postDto);
+        await _postRepository.AddAsync(postDto);
     }
 
-    public async Task UpdatePostAsync(PostDto postDto)
+    public async Task UpdateAsync(PostDto postDto)
     {
-        await _postRepository.UpdatePostAsync(postDto);
+        await _postRepository.UpdateAsync(postDto);
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _postRepository.DeletePostAsync(id);
+        await _postRepository.DeleteAsync(id);
     }
 }

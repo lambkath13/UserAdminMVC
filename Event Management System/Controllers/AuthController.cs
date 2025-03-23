@@ -35,7 +35,7 @@ public class AuthController(IUserRepository userRepository, IMapper mapper) : Co
             Role = registerDto.Role
         };
 
-        var result = await userRepository.AddUserAsync(user, registerDto.Password);
+        var result = await userRepository.AddAsync(user, registerDto.Password);
         return result.Succeeded ? Ok("User registered successfully") : BadRequest(result.Errors);
     }
 

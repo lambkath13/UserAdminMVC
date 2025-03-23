@@ -6,10 +6,10 @@ namespace Event_Management_System.Service;
 
 public interface IUserService
 {
-    Task<IdentityResult> RegisterUserAsync(UserDto userDto, string password);
+    Task<IdentityResult> RegisterAsync(UserDto userDto, string password);
     Task<UserDto?> AuthenticateAsync(string passportId, string password);
-    Task<IEnumerable<UserDto>> GetAllUsersAsync();
-    Task<UserDto?> GetUserByIdAsync(string passportId);
-    Task<IdentityResult> UpdateUserAsync(UserDto userDto);
-    Task<IdentityResult> DeleteUserAsync(string passportId);
+    Task<IEnumerable<UserDto>> GetAllAsync();
+    Task<UserDto?> GetByIdAsync(string passportId);
+    Task<IdentityResult> UpdateAsync(UserDto userDto);
+    Task<IdentityResult> DeleteAsync(string passportId);
 }

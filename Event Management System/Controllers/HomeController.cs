@@ -9,7 +9,7 @@ public class HomeController(IEventService eventService, IMapper mapper) : Contro
 {
     public async  Task<IActionResult> Index()
     {
-        var events = await eventService.GetAllEventsAsync();
+        var events = await eventService.GetAllAsync();
         return View(mapper.Map<List<EventDto>>(events));
     }
 }
