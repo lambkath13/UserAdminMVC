@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Event_Management_System.Models
 {
-    public class User : IdentityUser<Guid>
+    public class User
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public required string PassportId { get; set; }
 
         [Required]
@@ -26,6 +27,7 @@ namespace Event_Management_System.Models
 
         public List<Event> Events { get; set; }
         public List<Post> Posts { get; set; }
+        public string PasswordHash { get; set; }
     }
 
 

@@ -22,19 +22,7 @@ namespace Event_Management_System.Migrations
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Role = table.Column<int>(type: "int", nullable: false),
                     IsFirstAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,8 +161,8 @@ namespace Event_Management_System.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "AvatarUrl", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsFirstAdmin", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PassportId", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("fc4552da-13bc-479c-94a5-b816fd2ca4ca"), 0, null, "", "admin@example.com", true, true, false, null, "Admin", "ADMIN@EXAMPLE.COM", "ADMIN", "ADMIN123456", "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu", "", false, 1, null, false, "admin" });
+                columns: new[] { "Id", "AvatarUrl", "Email", "IsFirstAdmin", "Name", "PassportId", "PasswordHash", "Role" },
+                values: new object[] { new Guid("fc4552da-13bc-479c-94a5-b816fd2ca4ca"), null, "admin@example.com", true, "Admin", "ADMIN123456", "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventFeedbacks_EventId",

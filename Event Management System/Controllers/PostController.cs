@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
+
 [Authorize]
 public class PostController(IPostService postService, IMapper mapper, IImageService imageService) : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
+        var userId = GetCurrentUserId();
         var posts = await postService.GetAllAsync();
         return View(mapper.Map<List<PostDto>>(posts));
     }

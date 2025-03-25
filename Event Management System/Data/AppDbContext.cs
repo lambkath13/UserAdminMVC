@@ -8,7 +8,6 @@ namespace Event_Management_System.Data;
     
 public class AppDbContext : DbContext
 {
-    private readonly UserManager<User> _userManager;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {  }
     public DbSet<User> Users { get; set; } 
@@ -21,8 +20,6 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-       
-        var passwordHasher = new PasswordHasher<User>();
         
         var adminUser = new User
         {
@@ -30,25 +27,23 @@ public class AppDbContext : DbContext
             PassportId = "ADMIN123456",
             Name = "Admin",
             AvatarUrl = null,
-            UserName = "admin",
+            //UserName = "admin",
             Role = UserRole.Admin,
             IsFirstAdmin = true,
             Email = "admin@example.com",
-            NormalizedUserName = "ADMIN",
-            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-            EmailConfirmed = true,
-            AccessFailedCount = 0,
-            ConcurrencyStamp = string.Empty,
-            PhoneNumber = "",
-            LockoutEnabled = false,
-            PhoneNumberConfirmed = false,
-            LockoutEnd = null,
-            SecurityStamp = null,
-            TwoFactorEnabled = false,
-            PasswordHash = "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu"//BCrypt.Net.BCrypt.HashPassword("Admin123!")
+            // NormalizedUserName = "ADMIN",
+            // NormalizedEmail = "ADMIN@EXAMPLE.COM",
+            // EmailConfirmed = true,
+            // AccessFailedCount = 0,
+            // ConcurrencyStamp = string.Empty,
+            // PhoneNumber = "",
+            // LockoutEnabled = false,
+            // PhoneNumberConfirmed = false,
+            // LockoutEnd = null,
+            // SecurityStamp = null,
+            // TwoFactorEnabled = false,
+            PasswordHash = "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu" //BCrypt.Net.BCrypt.HashPassword("Admin123!")
         };
-
-        Console.WriteLine(adminUser.PasswordHash);
         modelBuilder.Entity<User>().HasData(adminUser);
 
         // Указываем, что у Event один Organizer (User)

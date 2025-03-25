@@ -7,41 +7,46 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event_Management_System.Repository;
 
-public class UserRepository(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, AppDbContext context)
+public class UserRepository(IMapper mapper, AppDbContext context)
     : IUserRepository
 {
-    private readonly SignInManager<User> _signInManager = signInManager;
     private readonly IMapper _mapper = mapper;
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
-        var users = await userManager.Users.ToListAsync();
+        var users = await context.Users.ToListAsync();
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
     public async Task<UserDto?> GetByIdAsync(string passportId)
     {
-        var user = await userManager.FindByNameAsync(passportId);
+        var user = await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
         return _mapper.Map<UserDto?>(user);
     }
 
     public async Task<IdentityResult> AddAsync(UserDto userDto, string password)
     {
         var user = _mapper.Map<User>(userDto);
-        return await userManager.CreateAsync(user, password);
+         await context.Users.AddAsync(user);
+         await context.SaveChangesAsync();
+         return IdentityResult.Success;
     }
 
     public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
         var user = _mapper.Map<User>(userDto);
-        return await userManager.UpdateAsync(user);
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
+        return IdentityResult.Success;
     }
 
     public async Task<IdentityResult> DeleteAsync(string passportId)
     {
-        var user = await userManager.FindByNameAsync(passportId);
+        var user = await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
         if (user == null) return IdentityResult.Failed();
-        return await userManager.DeleteAsync(user);
+        context.Users.Remove(user);
+        await context.SaveChangesAsync();
+        return IdentityResult.Success;
     }
 
     public async Task<UserDto?> AuthenticateAsync(string passportId, string password)

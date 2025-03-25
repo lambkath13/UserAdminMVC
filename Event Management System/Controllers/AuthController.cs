@@ -72,16 +72,19 @@ public class AuthController(IUserRepository userRepository, IMapper mapper, IHtt
     
     private async Task Authenticate(string passportId, Guid userId)
     {
-        var list = new List<Claim>()
+        var claims = new List<Claim>
         {
             new Claim(ClaimsIdentity.DefaultNameClaimType, passportId),
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
         };
-        var id = new ClaimsIdentity(list, "Cookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
     }
     
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> Logout()
     {
         if (httpContextAccessor.HttpContext != null)
