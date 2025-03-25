@@ -7,11 +7,19 @@ public class BaseController : Controller
 {
     protected Guid GetCurrentUserId()
     {
-        return HttpContext.User.Identity is not ClaimsIdentity identity ? Guid.Empty : Guid.Parse(HttpContext.User.Claims
-            .Where(x => x.Type == ClaimTypes.NameIdentifier)
-            .Select(x => x.Value)
-            .FirstOrDefault() ?? string.Empty);
-    }
-       
+        if (HttpContext.User.Identity is not ClaimsIdentity identity || !identity.IsAuthenticated)
+        {
+            throw new UnauthorizedAccessException("Пользователь не авторизован");
+        }
+
+        var userIdClaim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
     
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            throw new UnauthorizedAccessException("Идентификатор пользователя отсутствует");
+        }
+
+        return Guid.Parse(userIdClaim);
+    }
+
 }

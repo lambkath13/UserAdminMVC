@@ -32,10 +32,6 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
     public IActionResult Create()
     {
         var userId = GetCurrentUserId();
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
         
         var postDto = new CreatePostDto()
         {
