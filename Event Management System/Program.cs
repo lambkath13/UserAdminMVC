@@ -11,17 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-// Add services to the container.
-builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/User/Login";
+        options.LoginPath = new PathString("/auth/login");
+        options.AccessDeniedPath = new PathString("/Error/Error");
     });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
@@ -33,31 +34,24 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-     await dataContext.Database.EnsureDeletedAsync();
+    //await dataContext.Database.EnsureDeletedAsync();
     await dataContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSwagger();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

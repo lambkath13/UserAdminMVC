@@ -1,12 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Event_Management_System.DTO;
 using Event_Management_System.Enums;
 using Event_Management_System.Repository;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-public class AuthController(IUserRepository userRepository, IMapper mapper) : Controller
+public class AuthController(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : Controller
 {
     private readonly IMapper _mapper = mapper;
 
@@ -49,7 +52,43 @@ public class AuthController(IUserRepository userRepository, IMapper mapper) : Co
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
         var user = await userRepository.AuthenticateAsync(loginRequest.PassportId, loginRequest.Password);
-        if (user == null) return Unauthorized("Invalid credentials");
-        return Ok(new { message = "Login successful", user });
+        
+        if (user == null)
+        {
+            ModelState.AddModelError("", "Incorrect login or password!");
+            return View(loginRequest);
+        }
+        
+        if (!BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.PasswordHash))
+        {
+            ModelState.AddModelError("", "Не правльный логин или пароль!");
+            return View(loginRequest);
+        }
+
+        await Authenticate(user.PassportId, user.Id);
+
+        return RedirectToAction("Index", "Home");
+    }
+    
+    private async Task Authenticate(string passportId, Guid userId)
+    {
+        var list = new List<Claim>()
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, passportId),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+        };
+        var id = new ClaimsIdentity(list, "Cookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        if (httpContextAccessor.HttpContext != null)
+        {
+            await httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+        
+        return RedirectToAction("Login");
     }
 }

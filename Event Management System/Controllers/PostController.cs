@@ -2,10 +2,12 @@
 using Event_Management_System.DTO;
 using Event_Management_System.Models;
 using Event_Management_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
-public class PostController(IPostService postService, IMapper mapper, IImageService imageService) : Controller
+[Authorize]
+public class PostController(IPostService postService, IMapper mapper, IImageService imageService) : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -27,9 +29,16 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
     [HttpGet]
     public IActionResult Create()
     {
+        var userId = GetCurrentUserId();
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
+        
         var postDto = new CreatePostDto()
         {
-            UserId = "4c363cc6-0730-4805-9"
+            UserId = userId,
+
         };
         return View(postDto);
     }

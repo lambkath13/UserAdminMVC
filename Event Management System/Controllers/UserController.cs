@@ -7,7 +7,7 @@ namespace Event_Management_System.Controllers;
 
 [ApiController]
 [Route("api/users")]
-public class UserController : ControllerBase
+public class UserController : BaseController
 {
     private readonly IUserService _userService;
     private readonly IMapper _mapper;

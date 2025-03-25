@@ -1,4 +1,6 @@
-﻿using Event_Management_System.Models;
+﻿using System.Globalization;
+using Event_Management_System.Enums;
+using Event_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace Event_Management_System.Data;
@@ -19,6 +21,35 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+       
+        var passwordHasher = new PasswordHasher<User>();
+        
+        var adminUser = new User
+        {
+            Id = new Guid("fc4552da-13bc-479c-94a5-b816fd2ca4ca"),
+            PassportId = "ADMIN123456",
+            Name = "Admin",
+            AvatarUrl = null,
+            UserName = "admin",
+            Role = UserRole.Admin,
+            IsFirstAdmin = true,
+            Email = "admin@example.com",
+            NormalizedUserName = "ADMIN",
+            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+            EmailConfirmed = true,
+            AccessFailedCount = 0,
+            ConcurrencyStamp = string.Empty,
+            PhoneNumber = "",
+            LockoutEnabled = false,
+            PhoneNumberConfirmed = false,
+            LockoutEnd = null,
+            SecurityStamp = null,
+            TwoFactorEnabled = false,
+            PasswordHash = "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu"//BCrypt.Net.BCrypt.HashPassword("Admin123!")
+        };
+
+        Console.WriteLine(adminUser.PasswordHash);
+        modelBuilder.Entity<User>().HasData(adminUser);
 
         // Указываем, что у Event один Organizer (User)
         modelBuilder.Entity<Event>()
@@ -40,7 +71,7 @@ public class AppDbContext : DbContext
             .WithMany(e => e.EventFeedbacks)
             .HasForeignKey(ef => ef.EventId)
             .OnDelete(DeleteBehavior.Cascade); // Удаляем отзывы, если удаляется событие
-
+   
         // Связь между Post и User
         modelBuilder.Entity<Post>()
             .HasOne(p => p.User)

@@ -17,15 +17,15 @@ namespace Event_Management_System.Models
 
         [Required]
         [MaxLength(50)]
-        public string Email { get; set; } =null!;
+        public string Email { get; set; } = null!;
 
         [Required]
         public UserRole Role { get; set; }
 
         public bool IsFirstAdmin { get; set; } = false;
 
-        public List<Event> Events { get; set; } = null!;
-        public List<Post> Posts { get; set; } = null!;
+        public List<Event> Events { get; set; }
+        public List<Post> Posts { get; set; }
     }
 
 

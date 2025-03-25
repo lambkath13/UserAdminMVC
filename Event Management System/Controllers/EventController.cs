@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Event_Management_System.DTO;
 using Event_Management_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
@@ -8,6 +9,7 @@ namespace Event_Management_System.Controllers;
 public class EventController(IEventService eventService, IMapper mapper) : Controller
 {
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetAllEvents()
     {
         var events = await eventService.GetAllAsync();
