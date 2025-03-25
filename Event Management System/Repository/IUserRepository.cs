@@ -11,5 +11,5 @@ public interface IUserRepository
     Task<IdentityResult> AddAsync(UserDto userDto, string password);
     Task<IdentityResult> UpdateAsync(UserDto userDto);
     Task<IdentityResult> DeleteAsync(string passportId);
-    Task<UserDto?> AuthenticateAsync(string passportId, string password);
+    Task<User?> GetByPassportId(string loginRequestPassportId);
 }

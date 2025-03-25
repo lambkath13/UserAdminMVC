@@ -10,23 +10,21 @@ namespace Event_Management_System.Repository;
 public class UserRepository(IMapper mapper, AppDbContext context)
     : IUserRepository
 {
-    private readonly IMapper _mapper = mapper;
-
     public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
         var users = await context.Users.ToListAsync();
-        return _mapper.Map<IEnumerable<UserDto>>(users);
+        return mapper.Map<IEnumerable<UserDto>>(users);
     }
 
     public async Task<UserDto?> GetByIdAsync(string passportId)
     {
         var user = await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
-        return _mapper.Map<UserDto?>(user);
+        return mapper.Map<UserDto?>(user);
     }
 
     public async Task<IdentityResult> AddAsync(UserDto userDto, string password)
     {
-        var user = _mapper.Map<User>(userDto);
+        var user = mapper.Map<User>(userDto);
          await context.Users.AddAsync(user);
          await context.SaveChangesAsync();
          return IdentityResult.Success;
@@ -34,7 +32,7 @@ public class UserRepository(IMapper mapper, AppDbContext context)
 
     public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
-        var user = _mapper.Map<User>(userDto);
+        var user = mapper.Map<User>(userDto);
         context.Users.Update(user);
         await context.SaveChangesAsync();
         return IdentityResult.Success;
@@ -49,9 +47,8 @@ public class UserRepository(IMapper mapper, AppDbContext context)
         return IdentityResult.Success;
     }
 
-    public async Task<UserDto?> AuthenticateAsync(string passportId, string password)
+    public async Task<User?> GetByPassportId(string passportId)
     {
-        var user = await context.Users.FirstOrDefaultAsync(u => u.PassportId == passportId);
-        return user == null ? null : mapper.Map<UserDto>(user);
+       return await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
     }
 }

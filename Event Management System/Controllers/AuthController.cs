@@ -51,8 +51,7 @@ public class AuthController(IUserRepository userRepository, IMapper mapper, IHtt
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-        var user = await userRepository.AuthenticateAsync(loginRequest.PassportId, loginRequest.Password);
-        
+        var user = await userRepository.GetByPassportId(loginRequest.PassportId);
         if (user == null)
         {
             ModelState.AddModelError("", "Incorrect login or password!");
