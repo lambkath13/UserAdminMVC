@@ -3,13 +3,14 @@ using AutoMapper;
 using Event_Management_System.DTO;
 using Event_Management_System.Enums;
 using Event_Management_System.Repository;
+using Event_Management_System.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-public class AuthController(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor) : Controller
+public class AuthController(IUserService userService, IMapper mapper, IHttpContextAccessor httpContextAccessor) : Controller
 {
     private readonly IMapper _mapper = mapper;
 
@@ -38,7 +39,7 @@ public class AuthController(IUserRepository userRepository, IMapper mapper, IHtt
             Role = registerDto.Role
         };
 
-        var result = await userRepository.AddAsync(user, registerDto.Password);
+        var result = await userService.AddAsync(user, registerDto.Password);
         return result.Succeeded ? Ok("User registered successfully") : BadRequest(result.Errors);
     }
 
@@ -51,7 +52,7 @@ public class AuthController(IUserRepository userRepository, IMapper mapper, IHtt
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-        var user = await userRepository.GetByPassportId(loginRequest.PassportId);
+        var user = await userService.GetByIdAsync(loginRequest.PassportId);
         if (user == null)
         {
             ModelState.AddModelError("", "Incorrect login or password!");

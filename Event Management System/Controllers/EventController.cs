@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-public class EventController(IEventService eventService, IMapper mapper) : Controller
+public class EventController(IEventService eventService) : Controller
 {
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetAllEvents()
     {
         var events = await eventService.GetAllAsync();
-        return Ok(mapper.Map<IEnumerable<EventDto>>(events));
+        return Ok(events);
     }
 
     [HttpGet("{id}")]
@@ -23,7 +23,7 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
         if (eventEntity == null)
             return NotFound();
 
-        return Ok(mapper.Map<EventDto>(eventEntity));
+        return Ok(eventEntity);
     }
 
     [HttpGet]
@@ -33,15 +33,14 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateEventDto createEventDto)
+    public async Task<IActionResult> Create([FromBody] EventDto eventDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var eventEntity = mapper.Map<EventDto>(createEventDto);
-        await eventService.AddAsync(eventEntity);
+        await eventService.AddAsync(eventDto);
 
-        return CreatedAtAction(nameof(GetEventById), new { id = eventEntity.EventId }, mapper.Map<EventDto>(eventEntity));
+        return CreatedAtAction(nameof(GetEventById), new { id = eventDto.EventId }, eventDto);
     }
 
     [HttpPut("{id}")]
@@ -50,8 +49,7 @@ public class EventController(IEventService eventService, IMapper mapper) : Contr
         if (!ModelState.IsValid || id != eventDto.EventId)
             return BadRequest(ModelState);
 
-        var eventEntity = mapper.Map<EventDto>(eventDto);
-        await eventService.UpdateAsync(eventEntity);
+        await eventService.UpdateAsync(eventDto);
         return NoContent();
     }
 

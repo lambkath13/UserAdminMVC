@@ -5,9 +5,9 @@ namespace Event_Management_System.Repository;
 
 public interface IPostRepository
 {
-    Task<IEnumerable<PostDto>> GetAllAsync();
-    Task<PostDto?> GetByIdAsync(int id);
-    Task AddAsync(PostDto postDto);
-    Task UpdateAsync(PostDto postDto);
+    Task<IEnumerable<Post>> GetAllAsync();
+    Task<Post?> GetByIdAsync(int id);
+    Task AddAsync(Post postEntity);
+    Task UpdateAsync(Post postEntity);
     Task DeleteAsync(int id);
 }

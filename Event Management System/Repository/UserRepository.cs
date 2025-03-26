@@ -7,33 +7,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event_Management_System.Repository;
 
-public class UserRepository(IMapper mapper, AppDbContext context)
+public class UserRepository( AppDbContext context)
     : IUserRepository
 {
-    public async Task<IEnumerable<UserDto>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync()
     {
-        var users = await context.Users.ToListAsync();
-        return mapper.Map<IEnumerable<UserDto>>(users);
+        return await context.Users.ToListAsync();
     }
 
-    public async Task<UserDto?> GetByIdAsync(string passportId)
+    public async Task<User?> GetByIdAsync(string passportId)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
-        return mapper.Map<UserDto?>(user);
+        return await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
     }
 
-    public async Task<IdentityResult> AddAsync(UserDto userDto, string password)
+    public async Task<IdentityResult> AddAsync(User userEntity, string password)
     {
-        var user = mapper.Map<User>(userDto);
-         await context.Users.AddAsync(user);
+         await context.Users.AddAsync(userEntity);
          await context.SaveChangesAsync();
          return IdentityResult.Success;
     }
 
-    public async Task<IdentityResult> UpdateAsync(UserDto userDto)
+    public async Task<IdentityResult> UpdateAsync(User userEntity)
     {
-        var user = mapper.Map<User>(userDto);
-        context.Users.Update(user);
+        context.Users.Update(userEntity);
         await context.SaveChangesAsync();
         return IdentityResult.Success;
     }

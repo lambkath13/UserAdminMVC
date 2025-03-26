@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Event_Management_System.Controllers;
 
 [Authorize]
-public class PostController(IPostService postService, IMapper mapper, IImageService imageService) : BaseController
+public class PostController(IPostService postService, IImageService imageService) : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var userId = GetCurrentUserId();
         var posts = await postService.GetAllAsync();
-        return View(mapper.Map<List<PostDto>>(posts));
+        return View(posts);
     }
 
     [HttpGet("{id}")]
@@ -25,7 +25,7 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
         if (postEntity == null)
             return NotFound();
 
-        return Ok(mapper.Map<PostDto>(postEntity));
+        return Ok(postEntity);
     }
 
     [HttpGet]
@@ -64,8 +64,7 @@ public class PostController(IPostService postService, IMapper mapper, IImageServ
         if (!ModelState.IsValid || id != postDto.PostId)
             return BadRequest(ModelState);
 
-        var postEntity = mapper.Map<PostDto>(postDto);
-        await postService.UpdateAsync(postEntity);
+        await postService.UpdateAsync(postDto);
         return NoContent();
     }
 

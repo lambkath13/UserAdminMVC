@@ -9,36 +9,30 @@ namespace Event_Management_System.Repository;
 public class PostRepository:IPostRepository
 {
     private readonly AppDbContext _context;
-    private readonly IMapper _mapper;
 
-    public PostRepository(AppDbContext context,IMapper mapper)
+    public PostRepository(AppDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PostDto>> GetAllAsync()
+    public async Task<IEnumerable<Post>> GetAllAsync()
     {
-        var posts = await _context.Posts.ToListAsync();
-        return _mapper.Map<IEnumerable<PostDto>>(posts);
+        return await _context.Posts.ToListAsync();
     }
 
-    public async Task<PostDto?> GetByIdAsync(int id)
+    public async Task<Post?> GetByIdAsync(int id)
     {
-        var posts = await _context.Posts.FindAsync(id);
-        return _mapper.Map<PostDto?>(posts);
+        return await _context.Posts.FindAsync(id);
     }
 
-    public async Task AddAsync(PostDto postDto)
+    public async Task AddAsync(Post postEntity)
     {
-        var postEntity = _mapper.Map<Post>(postDto);
         await _context.Posts.AddAsync(postEntity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(PostDto postDto)
+    public async Task UpdateAsync(Post postEntity)
     {
-        var postEntity = _mapper.Map<Post>(postDto);
         _context.Posts.Update(postEntity);
         await _context.SaveChangesAsync();
     }

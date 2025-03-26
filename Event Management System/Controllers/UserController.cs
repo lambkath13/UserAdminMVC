@@ -7,13 +7,13 @@ namespace Event_Management_System.Controllers;
 
 [ApiController]
 [Route("api/users")]
-public class UserController(IUserService userService, IMapper mapper) : BaseController
+public class UserController(IUserService userService) : BaseController
 {
     [HttpGet]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await userService.GetAllAsync();
-        return Ok(mapper.Map<IEnumerable<UserDto>>(users));
+        return Ok(users);
     }
 
     [HttpGet("{passportId}")]
@@ -23,7 +23,7 @@ public class UserController(IUserService userService, IMapper mapper) : BaseCont
         if (userEntity == null)
             return NotFound();
         
-        return Ok(mapper.Map<UserDto>(userEntity));
+        return Ok(userEntity);
     }
 
     [HttpPut("{passportId}")]
@@ -32,8 +32,7 @@ public class UserController(IUserService userService, IMapper mapper) : BaseCont
         if (!ModelState.IsValid || passportId != userDto.PassportId)
             return BadRequest(ModelState);
 
-        var userEntity = mapper.Map<UserDto>(userDto);
-        await userService.UpdateAsync(userEntity);
+        await userService.UpdateAsync(userDto);
         return NoContent();
     }
 

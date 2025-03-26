@@ -1,4 +1,5 @@
-﻿using Event_Management_System.DTO;
+﻿using AutoMapper;
+using Event_Management_System.DTO;
 using Event_Management_System.Models;
 using Event_Management_System.Repository;
 
@@ -7,30 +8,36 @@ namespace Event_Management_System.Service;
 public class PostService:IPostService
 {
     private readonly IPostRepository _postRepository;
+    private readonly IMapper _mapper;
 
-    public PostService(IPostRepository postRepository)
+    public PostService(IPostRepository postRepository, IMapper mapper)
     {
+        _mapper = mapper;
         _postRepository = postRepository;
     }
 
     public async Task<IEnumerable<PostDto>> GetAllAsync()
     {
-        return await _postRepository.GetAllAsync();
+        var posts= await _postRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
     public async Task<PostDto?> GetByIdAsync(int id)
     {
-        return await _postRepository.GetByIdAsync(id);
+        var postEntity = await _postRepository.GetByIdAsync(id);
+        return _mapper.Map<PostDto>(postEntity);
     }
 
     public async Task AddAsync(PostDto postDto)
     {
-        await _postRepository.AddAsync(postDto);
+        var postEntity = _mapper.Map<Post>(postDto);
+        await _postRepository.AddAsync(postEntity);
     }
 
     public async Task UpdateAsync(PostDto postDto)
     {
-        await _postRepository.UpdateAsync(postDto);
+        var postEntity = _mapper.Map<Post>(postDto);
+        await _postRepository.UpdateAsync(postEntity);
     }
 
     public async Task DeleteAsync(int id)

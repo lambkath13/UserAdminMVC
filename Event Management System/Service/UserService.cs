@@ -1,33 +1,48 @@
-﻿using Event_Management_System.DTO;
+﻿using AutoMapper;
+using Event_Management_System.DTO;
+using Event_Management_System.Models;
 using Event_Management_System.Repository;
 using Microsoft.AspNetCore.Identity;
 
 namespace Event_Management_System.Service;
 
-public class UserService(IUserRepository userRepository) : IUserService
+public class UserService : IUserService
 {
-    public Task<IdentityResult> Create(UserDto userDto, string password)
+    private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
+
+    public UserService(IUserRepository userRepository, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _userRepository = userRepository;
+        _mapper = mapper;
     }
 
-    public Task<IEnumerable<UserDto>> GetAllAsync()
+    public async Task<IdentityResult> AddAsync(UserDto userDto, string password)
     {
-        throw new NotImplementedException();
+        var userEntity = _mapper.Map<User>(userDto);
+        return await _userRepository.AddAsync(userEntity, password);
     }
 
-    public Task<UserDto?> GetByIdAsync(string passportId)
+    public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var users = await _userRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
-    public Task<IdentityResult> UpdateAsync(UserDto userDto)
+    public async Task<UserDto?> GetByIdAsync(string passportId)
     {
-        throw new NotImplementedException();
+        var userEntity = await _userRepository.GetByIdAsync(passportId);
+        return _mapper.Map<UserDto?>(userEntity);
     }
 
-    public Task<IdentityResult> DeleteAsync(string passportId)
+    public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
-        throw new NotImplementedException();
+        var userEntity = _mapper.Map<User>(userDto);
+        return await _userRepository.UpdateAsync(userEntity);
+    }
+
+    public async Task<IdentityResult> DeleteAsync(string passportId)
+    {
+        return await _userRepository.DeleteAsync(passportId);
     }
 }

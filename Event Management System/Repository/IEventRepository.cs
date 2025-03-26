@@ -5,9 +5,9 @@ namespace Event_Management_System.Repository;
 
 public interface IEventRepository
 {
-    Task<IEnumerable<EventDto>> GetAllAsync();
-    Task<EventDto?> GetByIdAsync(int id);
-    Task AddAsync(EventDto eventDto);
-    Task UpdateAsync(EventDto eventDto);
+    Task<IEnumerable<Event>> GetAllAsync();
+    Task<Event?> GetByIdAsync(int id);
+    Task AddAsync(Event eventEntity);
+    Task UpdateAsync(Event eventEntity);
     Task DeleteAsync(int id);
 }
