@@ -7,9 +7,9 @@ namespace Event_Management_System.Repository;
 public interface IUserRepository
 {
     Task<IEnumerable<User>> GetAllAsync();
-    Task<User?> GetByIdAsync(string passportId);
+    Task<User?> GetByIdAsync(Guid id);
     Task<IdentityResult> AddAsync(User userEntity, string password);
     Task<IdentityResult> UpdateAsync(User userEntity);
-    Task<IdentityResult> DeleteAsync(string passportId);
+    Task<IdentityResult> DeleteAsync(Guid id);
     Task<User?> GetByPassportId(string loginRequestPassportId);
 }

@@ -8,7 +8,8 @@ public interface IUserService
 {
     Task<IdentityResult> AddAsync(UserDto userDto, string password);
     Task<IEnumerable<UserDto>> GetAllAsync();
-    Task<UserDto?> GetByIdAsync(string passportId);
+    Task<UserDto?> GetByIdAsync(Guid id);
     Task<IdentityResult> UpdateAsync(UserDto userDto);
-    Task<IdentityResult> DeleteAsync(string passportId);
+    Task<IdentityResult> DeleteAsync(Guid id);
+    Task<UserDto> GetByPassportIdAsync(string loginRequestPassportId );
 }

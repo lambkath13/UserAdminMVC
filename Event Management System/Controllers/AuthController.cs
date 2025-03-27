@@ -52,7 +52,7 @@ public class AuthController(IUserService userService, IMapper mapper, IHttpConte
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-        var user = await userService.GetByIdAsync(loginRequest.PassportId);
+        var user = await userService.GetByPassportIdAsync(loginRequest.PassportId);
         if (user == null)
         {
             ModelState.AddModelError("", "Incorrect login or password!");

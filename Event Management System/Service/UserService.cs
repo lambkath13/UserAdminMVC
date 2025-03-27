@@ -29,9 +29,9 @@ public class UserService : IUserService
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
-    public async Task<UserDto?> GetByIdAsync(string passportId)
+    public async Task<UserDto?> GetByIdAsync(Guid id)
     {
-        var userEntity = await _userRepository.GetByIdAsync(passportId);
+        var userEntity = await _userRepository.GetByIdAsync(id);
         return _mapper.Map<UserDto?>(userEntity);
     }
 
@@ -41,8 +41,14 @@ public class UserService : IUserService
         return await _userRepository.UpdateAsync(userEntity);
     }
 
-    public async Task<IdentityResult> DeleteAsync(string passportId)
+    public async Task<IdentityResult> DeleteAsync(Guid id)
     {
-        return await _userRepository.DeleteAsync(passportId);
+        return await _userRepository.DeleteAsync(id);
+    }
+
+    public async Task<UserDto> GetByPassportIdAsync(string loginRequestPassportId)
+    {
+        var user = await _userRepository.GetByPassportId(loginRequestPassportId);
+        return _mapper.Map<UserDto>(user);
     }
 }

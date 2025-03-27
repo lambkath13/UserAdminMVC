@@ -17,9 +17,9 @@ public class UserController(IUserService userService) : BaseController
     }
 
     [HttpGet("{passportId}")]
-    public async Task<IActionResult> GetUserById(string passportId)
+    public async Task<IActionResult> GetUserById(Guid id)
     {
-        var userEntity = await userService.GetByIdAsync(passportId);
+        var userEntity = await userService.GetByIdAsync(id);
         if (userEntity == null)
             return NotFound();
         
@@ -37,13 +37,13 @@ public class UserController(IUserService userService) : BaseController
     }
 
     [HttpDelete("{passportId}")]
-    public async Task<IActionResult> DeleteUser(string passportId)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        var userEntity = await userService.GetByIdAsync(passportId);
+        var userEntity = await userService.GetByIdAsync(id);
         if (userEntity == null)
             return NotFound();
             
-        await userService.DeleteAsync(passportId);
+        await userService.DeleteAsync(id);
         return NoContent();
     }
 }
