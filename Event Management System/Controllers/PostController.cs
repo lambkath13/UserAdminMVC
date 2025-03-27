@@ -45,7 +45,7 @@ public class PostController(IPostService postService, IImageService imageService
     public async Task<IActionResult> Create([FromForm] CreatePostDto createPostDto)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            return View(createPostDto);
 
         await postService.AddAsync(new PostDto()
         {
