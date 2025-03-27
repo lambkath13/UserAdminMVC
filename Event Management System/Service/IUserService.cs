@@ -7,7 +7,7 @@ namespace Event_Management_System.Service;
 
 public interface IUserService
 {
-    Task<IdentityResult> AddAsync(UserDto userDto);
+    Task<IdentityResult> AddAsync(User user);
     Task<IEnumerable<UserDto>> GetAllAsync();
     Task<UserDto?> GetByIdAsync(Guid id);
     Task<IdentityResult> UpdateAsync(UserDto userDto);

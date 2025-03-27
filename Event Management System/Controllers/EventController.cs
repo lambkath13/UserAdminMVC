@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
+[Authorize]
 public class EventController(IEventService eventService) : Controller
 {
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> GetAllEvents()
     {
         var events = await eventService.GetAllAsync();

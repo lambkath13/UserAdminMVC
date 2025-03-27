@@ -7,58 +7,48 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Service;
 
-public class UserService : IUserService
+public class UserService(IUserRepository userRepository, IMapper mapper) : IUserService
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
-
-    public UserService(IUserRepository userRepository, IMapper mapper)
+    public async Task<IdentityResult> AddAsync(User user)
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
-    }
-
-    public async Task<IdentityResult> AddAsync(UserDto userDto)
-    {
-        var userEntity = _mapper.Map<User>(userDto);
-        return await _userRepository.AddAsync(userEntity);
+        return await userRepository.AddAsync(user);
     }
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
     {
-        var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<UserDto>>(users);
+        var users = await userRepository.GetAllAsync();
+        return mapper.Map<IEnumerable<UserDto>>(users);
     }
 
     public async Task<UserDto?> GetByIdAsync(Guid id)
     {
-        var userEntity = await _userRepository.GetByIdAsync(id);
-        return _mapper.Map<UserDto?>(userEntity);
+        var userEntity = await userRepository.GetByIdAsync(id);
+        return mapper.Map<UserDto?>(userEntity);
     }
 
     public async Task<IdentityResult> UpdateAsync(UserDto userDto)
     {
-        var userEntity = _mapper.Map<User>(userDto);
-        return await _userRepository.UpdateAsync(userEntity);
+        var userEntity = mapper.Map<User>(userDto);
+        return await userRepository.UpdateAsync(userEntity);
     }
 
     public async Task<IdentityResult> DeleteAsync(Guid id)
     {
-        var userEntity = await _userRepository.GetByIdAsync(id);
+        var userEntity = await userRepository.GetByIdAsync(id);
         if (userEntity == null)
             return IdentityResult.Failed();
-        return await _userRepository.DeleteAsync(userEntity);
+        return await userRepository.DeleteAsync(userEntity);
     }
 
     public async Task<UserDto> GetByPassportIdAsync(string loginRequestPassportId)
     {
-        var user = await _userRepository.GetByPassportId(loginRequestPassportId);
-        return _mapper.Map<UserDto>(user);
+        var user = await userRepository.GetByPassportId(loginRequestPassportId);
+        return mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto> GetByName(string name)
     {
-        var user = await _userRepository.GetByName(name);
+        var user = await userRepository.GetByName(name);
         return new UserDto()
         {
             Id = user.Id,

@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using Event_Management_System.DTO;
+﻿using Event_Management_System.DTO;
 using Event_Management_System.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-[ApiController]
-[Route("api/users")]
+[Authorize]
 public class UserController(IUserService userService) : BaseController
 {
     [HttpGet]
@@ -14,6 +13,18 @@ public class UserController(IUserService userService) : BaseController
     {
         var users = await userService.GetAllAsync();
         return Ok(users);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Me()
+    {
+        var userId = GetCurrentUserId();
+        var userEntity = await userService.GetByIdAsync(userId);
+       
+        if (userEntity == null)
+            return NotFound();
+        
+        return View(userEntity);
     }
 
     [HttpGet("{passportId}")]
@@ -23,7 +34,7 @@ public class UserController(IUserService userService) : BaseController
         if (userEntity == null)
             return NotFound();
         
-        return Ok(userEntity);
+        return View(userEntity);
     }
 
     [HttpPut("{passportId}")]

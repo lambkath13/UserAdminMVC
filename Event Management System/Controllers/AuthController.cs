@@ -2,6 +2,7 @@
 using AutoMapper;
 using Event_Management_System.DTO;
 using Event_Management_System.Enums;
+using Event_Management_System.Models;
 using Event_Management_System.Repository;
 using Event_Management_System.Service;
 using Microsoft.AspNetCore.Authentication;
@@ -21,27 +22,26 @@ public class AuthController(IUserService userService, IMapper mapper, IHttpConte
     }
     
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+    public async Task<IActionResult> Register(RegisterDto registerDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if (registerDto.Role == UserRole.Admin && registerDto.AdminPassword != "Special_Admin_Password")
+        var user = new User()
         {
-            return BadRequest("Invalid admin password");
-        }
-
-        var user = new UserDto
-        {
+            Id = Guid.NewGuid(),
             PassportId = registerDto.PassportId,
             Name = registerDto.Name,
             Email = registerDto.Email,
-            Role = registerDto.Role,
+            Role = UserRole.Student,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
         };
 
-        var result = await userService.AddAsync(user);
-        return result.Succeeded ? Ok("User registered successfully") : BadRequest(result.Errors);
+        await userService.AddAsync(user);
+        
+        await Authenticate(user.PassportId, user.Id);
+       
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]

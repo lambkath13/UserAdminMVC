@@ -13,12 +13,7 @@ public class RegisterDto
 
     [Required]
     public string Email { get; set; } = null!;
-    
-    [Required]
-    public UserRole Role  { get; set; }
 
     [Required]
     public string Password { get; set; } = null!;
-
-    public string? AdminPassword { get; set; } // Только для админов
 }
