@@ -46,4 +46,12 @@ public class UserController(IUserService userService) : BaseController
         await userService.DeleteAsync(id);
         return NoContent();
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetByName(string name)
+    {
+        var user = await userService.GetByName(name);
+        return Ok(user);
+        
+    }
 }

@@ -20,7 +20,7 @@ public class UserRepository( AppDbContext context)
         return await context.Users.FirstOrDefaultAsync(x=> x.Id == id);
     }
 
-    public async Task<IdentityResult> AddAsync(User userEntity, string password)
+    public async Task<IdentityResult> AddAsync(User userEntity)
     {
          await context.Users.AddAsync(userEntity);
          await context.SaveChangesAsync();
@@ -34,10 +34,8 @@ public class UserRepository( AppDbContext context)
         return IdentityResult.Success;
     }
 
-    public async Task<IdentityResult> DeleteAsync(Guid id)
+    public async Task<IdentityResult> DeleteAsync(User user)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x=> x.Id == id);
-        if (user == null) return IdentityResult.Failed();
         context.Users.Remove(user);
         await context.SaveChangesAsync();
         return IdentityResult.Success;
@@ -46,5 +44,10 @@ public class UserRepository( AppDbContext context)
     public async Task<User?> GetByPassportId(string passportId)
     {
        return await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
+    }
+
+    public async Task<User> GetByName(string name)
+    {
+        return await context.Users.FirstOrDefaultAsync(x=> x.Name == name);
     }
 }

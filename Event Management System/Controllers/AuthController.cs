@@ -36,10 +36,11 @@ public class AuthController(IUserService userService, IMapper mapper, IHttpConte
             PassportId = registerDto.PassportId,
             Name = registerDto.Name,
             Email = registerDto.Email,
-            Role = registerDto.Role
+            Role = registerDto.Role,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
         };
 
-        var result = await userService.AddAsync(user, registerDto.Password);
+        var result = await userService.AddAsync(user);
         return result.Succeeded ? Ok("User registered successfully") : BadRequest(result.Errors);
     }
 
