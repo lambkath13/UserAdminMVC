@@ -9,7 +9,7 @@ namespace Event_Management_System.Controllers;
 public class SubscribeController(RegistrationService registrationService):Controller
 {
     [HttpPost ("Subscribe")]
-    public async Task<IActionResult> AddAsync(EventRegistrationDto registrationDto)
+    public async Task<IActionResult> AddAsync([FromBody] EventRegistrationDto registrationDto)
     {
         await registrationService.AddAsync(registrationDto);
         return Ok("Event registration successfully added");
@@ -22,4 +22,23 @@ public class SubscribeController(RegistrationService registrationService):Contro
         return Ok("Event registration successfully removed");
     }
     
+    //Можно ли вообще так сделать?(логика только для кнопки этой)
+    // [HttpPost("subscription")]
+    // public async Task<IActionResult> Subscription([FromBody] EventRegistrationDto registrationDto)
+    // {
+    //     var existingSubscription = await registrationService.GetSubscriptionAsync(registrationDto.EventId, registrationDto.UserId);
+    //
+    //     if (existingSubscription != null)
+    //     {
+    //         await registrationService.RemoveSubscriptionAsync(existingSubscription);
+    //         return Ok("Subscription cancelled.");
+    //     }
+    //     else
+    //     {
+    //         await registrationService.AddSubscriptionAsync(registrationDto);
+    //         return Ok("Successfully subscribed.");
+    //     }
+    // }
+    
 }
+
