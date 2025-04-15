@@ -16,7 +16,7 @@ public class SubscribeController(RegistrationService registrationService):Contro
     }
 
     [HttpDelete("Unsubscribe")]
-    public async Task<IActionResult> UnsubscribeAsync(int eventId, Guid userId)
+    public async Task<IActionResult> RemoveAsync(int eventId, Guid userId)
     {
         await registrationService.RemoveAsync(eventId, userId);
         return Ok("Event registration successfully removed");
