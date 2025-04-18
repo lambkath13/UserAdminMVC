@@ -29,7 +29,8 @@ namespace Event_Management_System.Models
         public string File { get; set; }
         public User User { get; set; }
 
-        public List<EventFeedback> EventFeedbacks { get; set; } = null!;
+        public List<EventFeedback> EventFeedbacks { get; set; }
+        public List<EventRegistration> EventRegistrations { get; set; }
     }
 
     

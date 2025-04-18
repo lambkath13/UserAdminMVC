@@ -7,10 +7,10 @@ namespace Event_Management_System.Controllers;
 
 public class HomeController(IEventService eventService) : BaseController
 {
-    public async  Task<IActionResult> Index()
+    public async  Task<IActionResult> Index(string? query)
     {
         var userId = GetCurrentUserId();
-        var events = await eventService.GetAllAsync();
+        var events = await eventService.GetAllAsync(userId, query);
         var eventEntities = new GetEventEntityDto()
         {
             Entities = events,

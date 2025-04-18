@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Event_Management_System.Models;
 
@@ -11,18 +11,16 @@ public class EventFeedback
     [Required]
     public int EventId { get; set; }
 
-    public Event Event { get; set; } = null!;
+    public Event Event { get; set; }
 
-    [Required]
     public Guid UserId { get; set; }
 
-    public User User { get; set; } = null!;
+    public User User { get; set; }
 
-    [MaxLength(50)]
+    [MaxLength(100)]
     public string Content { get; set; } = null!;
 
     public int Rating { get; set; }
 
-    [Required]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
 }

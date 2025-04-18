@@ -11,10 +11,10 @@ namespace Event_Management_System.Controllers;
 public class PostController(IPostService postService, IImageService imageService) : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(string? query)
     {
         var userId = GetCurrentUserId();
-        var posts = await postService.GetAllAsync(userId);
+        var posts = await postService.GetAllAsync(userId, query);
         return View(posts);
     }
 

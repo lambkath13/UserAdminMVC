@@ -7,11 +7,11 @@ namespace Event_Management_System.Service;
 
 public class PostService(IPostRepository postRepository, IMapper mapper, IUserRepository userRepository) : IPostService
 {
-    public async Task<IEnumerable<PostDto>> GetAllAsync(Guid? userId)
+    public async Task<IEnumerable<PostDto>> GetAllAsync(Guid? userId, string? query)
     {
         var user = await userRepository.GetByIdAsync(userId);
         
-        var posts= await postRepository.GetAllAsync(userId, user?.Role);
+        var posts= await postRepository.GetAllAsync(userId, user?.Role, query);
         return mapper.Map<IEnumerable<PostDto>>(posts);
     }
 

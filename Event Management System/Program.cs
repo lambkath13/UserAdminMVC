@@ -37,6 +37,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
 builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 
 var app = builder.Build();

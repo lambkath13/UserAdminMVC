@@ -5,7 +5,7 @@ namespace Event_Management_System.Repository;
 
 public interface IPostRepository
 {
-    Task<IEnumerable<Post>> GetAllAsync(Guid? userId, UserRole? role);
+    Task<IEnumerable<Post>> GetAllAsync(Guid? userId, UserRole? role, string? query);
     Task<Post?> GetByIdAsync(int id);
     Task AddAsync(Post postEntity);
     Task UpdateAsync(Post postEntity);

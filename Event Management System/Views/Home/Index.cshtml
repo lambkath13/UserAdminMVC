@@ -10,13 +10,24 @@
             {
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3 mb-3">
                     <div class="card component-card_2">
-                        <img src="/image/@eventDto.File" class="card-img-top" alt="widget-card-2">
+                        <a asp-action="GetById" asp-controller="Event" asp-route-id="@eventDto.Id">
+                            <img src="/image/@eventDto.File" class="card-img-top" alt="widget-card-2">
+                        </a>
                         <div class="card-body">
                             <h5 class="card-title"><a href="">@eventDto.Title</a></h5>
                             <p class="card-text">@eventDto.Description</p>
                             <div class="card-star_rating mb-2">
-                                <span>Raiting</span>
-                                <span class="badge badge-pills badge-success">4.5</span>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= eventDto.Rating)
+                                    {
+                                        <span style="color: gold;">&#9733;</span> @* Filled star ★ *@
+                                    }
+                                    else
+                                    {
+                                        <span style="color: lightgray;">&#9733;</span> @* Empty-looking star in gray *@
+                                    }
+                                }
                             </div>
                             @if (Model.UserId != null && eventDto.IsSubscribe == false)
                             {
@@ -30,7 +41,6 @@
                             {
                                 <a href="/auth/Register" class="btn btn-primary">Subscribe</a>
                             }
-
                         </div>
                     </div>
                 </div>

@@ -8,10 +8,23 @@ namespace Event_Management_System.Repository;
 
 public class PostRepository(AppDbContext context) : IPostRepository
 {
-    public async Task<IEnumerable<Post>> GetAllAsync(Guid? userId, UserRole? role)
+    public async Task<IEnumerable<Post>> GetAllAsync(Guid? userId, UserRole? role, string? query)
     {
+        query = query?.ToLower();
+
         return await context.Posts
-            .Where(x=> userId != null && x.UserId == userId || role != null && role == UserRole.Admin).ToListAsync();
+            .Where(x =>
+                (
+                    (userId != null && x.UserId == userId) ||
+                    (role != null && role == UserRole.Admin)
+                )
+                &&
+                (
+                    string.IsNullOrEmpty(query) ||
+                    x.Content.ToLower().Contains(query)
+                )
+            )
+            .ToListAsync();
     }
 
     public async Task<Post?> GetByIdAsync(int id)

@@ -74,8 +74,8 @@ namespace Event_Management_System.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -122,6 +122,40 @@ namespace Event_Management_System.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EventRegistrations");
+                });
+
+            modelBuilder.Entity("Event_Management_System.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsNew")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Link")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
@@ -270,7 +304,7 @@ namespace Event_Management_System.Migrations
             modelBuilder.Entity("Event_Management_System.Models.EventRegistration", b =>
                 {
                     b.HasOne("Event_Management_System.Models.Event", "Event")
-                        .WithMany()
+                        .WithMany("EventRegistrations")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -318,6 +352,8 @@ namespace Event_Management_System.Migrations
             modelBuilder.Entity("Event_Management_System.Models.Event", b =>
                 {
                     b.Navigation("EventFeedbacks");
+
+                    b.Navigation("EventRegistrations");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
