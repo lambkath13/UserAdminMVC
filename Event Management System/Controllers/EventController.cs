@@ -1,4 +1,4 @@
-﻿using Event_Management_System.DTO;
+﻿using Event_Management_System.Dto.Event;
 using Event_Management_System.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +20,13 @@ public class EventController(IEventService eventService) : BaseController
         return View(eventEntities);
     }
 
-    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var eventEntity = await eventService.GetByIdAsync(id);
         if (eventEntity == null)
             return NotFound();
 
-        return Ok(eventEntity);
+        return View(eventEntity);
     }
 
     [HttpGet]

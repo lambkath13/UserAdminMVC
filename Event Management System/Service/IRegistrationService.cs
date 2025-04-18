@@ -1,4 +1,4 @@
-using Event_Management_System.DTO;
+using Event_Management_System.Dto.Event;
 
 namespace Event_Management_System.Service;
 

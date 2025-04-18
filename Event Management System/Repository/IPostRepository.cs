@@ -1,5 +1,4 @@
-﻿using Event_Management_System.DTO;
-using Event_Management_System.Enums;
+﻿using Event_Management_System.Enums;
 using Event_Management_System.Models;
 
 namespace Event_Management_System.Repository;

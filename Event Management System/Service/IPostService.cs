@@ -1,4 +1,4 @@
-﻿using Event_Management_System.DTO;
+﻿using Event_Management_System.Dto.Post;
 using Event_Management_System.Models;
 
 namespace Event_Management_System.Service;

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
-using Event_Management_System.DTO;
+using Event_Management_System.Dto.Auth;
 using Event_Management_System.Enums;
 using Event_Management_System.Models;
 using Event_Management_System.Repository;

@@ -1,4 +1,4 @@
-﻿namespace Event_Management_System.DTO;
+﻿namespace Event_Management_System.Dto.Event;
 
 public class EventRegistrationDto
 {

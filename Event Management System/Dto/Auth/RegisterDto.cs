@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Event_Management_System.Enums;
 
-namespace Event_Management_System.DTO;
+namespace Event_Management_System.Dto.Auth;
 
 public class RegisterDto
 {

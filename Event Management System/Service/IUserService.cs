@@ -1,4 +1,4 @@
-﻿using Event_Management_System.DTO;
+﻿using Event_Management_System.Dto.User;
 using Event_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

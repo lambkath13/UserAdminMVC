@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Event_Management_System.DTO;
+using Event_Management_System.Dto.User;
 using Event_Management_System.Models;
 using Event_Management_System.Repository;
 using Microsoft.AspNetCore.Identity;

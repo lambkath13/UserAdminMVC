@@ -1,6 +1,6 @@
 ﻿using Event_Management_System.Enums;
 
-namespace Event_Management_System.DTO;
+namespace Event_Management_System.Dto.User;
 
 public class UserDto
 {
