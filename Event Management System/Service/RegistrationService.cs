@@ -5,25 +5,29 @@ using Event_Management_System.Repository;
 
 namespace Event_Management_System.Service;
 
-public class RegistrationService: IRegistrationService
+public class RegistrationService(IRegistrationRepository registrationRepository) : IRegistrationService
 {
-    private readonly IRegistrationRepository _registrationRepository;
-    private readonly IMapper _mapper;
-
-    public RegistrationService(IRegistrationRepository repository, IMapper mapper)
-    {
-        _registrationRepository = repository;
-        _mapper = mapper;
-    }
-
     public async Task AddAsync(EventRegistrationDto registrationDto)
     {
-        var registrationEntity = _mapper.Map<EventRegistration>(registrationDto);
-        await _registrationRepository.AddAsync(registrationEntity);
+        var registration = await registrationRepository.GetByUserIdAndEventId(registrationDto.UserId, registrationDto.EventId);
+        if (registration != null)
+            await RemoveAsync(registration.EventId, registration.UserId);
+        else
+        {
+            var registrationEntity = new EventRegistration()
+            {
+                EventId = registrationDto.EventId,
+                UserId = registrationDto.UserId,
+                RegisteredAt = DateTime.Now
+            };
+            await registrationRepository.AddAsync(registrationEntity);
+        }
     }
 
     public async Task RemoveAsync(int eventId, Guid userId)
     {
-        await _registrationRepository.RemoveAsync(eventId, userId);
+        var registration = await registrationRepository.GetByUserIdAndEventId(userId, eventId);
+        if (registration != null)
+            await registrationRepository.RemoveAsync(registration);
     }
 }

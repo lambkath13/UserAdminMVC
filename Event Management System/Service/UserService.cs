@@ -20,7 +20,7 @@ public class UserService(IUserRepository userRepository, IMapper mapper) : IUser
         return mapper.Map<IEnumerable<UserDto>>(users);
     }
 
-    public async Task<UserDto?> GetByIdAsync(Guid id)
+    public async Task<UserDto?> GetByIdAsync(Guid? id)
     {
         var userEntity = await userRepository.GetByIdAsync(id);
         return mapper.Map<UserDto?>(userEntity);

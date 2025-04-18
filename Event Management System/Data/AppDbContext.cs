@@ -1,7 +1,5 @@
-﻿using System.Globalization;
-using Event_Management_System.Enums;
+﻿using Event_Management_System.Enums;
 using Event_Management_System.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace Event_Management_System.Data;
 

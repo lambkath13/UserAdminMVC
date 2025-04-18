@@ -38,6 +38,10 @@ namespace Event_Management_System.Migrations
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("File")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -229,7 +233,7 @@ namespace Event_Management_System.Migrations
                             Name = "Admin",
                             PassportId = "ADMIN123456",
                             PasswordHash = "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu",
-                            Role = 1
+                            Role = 2
                         });
                 });
 

@@ -1,5 +1,4 @@
-﻿using Event_Management_System.DTO;
-using Event_Management_System.Models;
+﻿using Event_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Event_Management_System.Repository;
@@ -7,7 +6,7 @@ namespace Event_Management_System.Repository;
 public interface IUserRepository
 {
     Task<IEnumerable<User>> GetAllAsync();
-    Task<User?> GetByIdAsync(Guid id);
+    Task<User?> GetByIdAsync(Guid? id);
     Task<IdentityResult> AddAsync(User userEntity);
     Task<IdentityResult> UpdateAsync(User user);
     Task<IdentityResult> DeleteAsync(User user);

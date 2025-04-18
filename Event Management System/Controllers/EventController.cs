@@ -1,23 +1,27 @@
-﻿using AutoMapper;
-using Event_Management_System.DTO;
+﻿using Event_Management_System.DTO;
 using Event_Management_System.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Event_Management_System.Controllers;
 
-[Authorize]
-public class EventController(IEventService eventService) : Controller
+public class EventController(IEventService eventService) : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetAllEvents()
+    public async Task<IActionResult> GetAll()
     {
+        var userId = GetCurrentUserId();
         var events = await eventService.GetAllAsync();
-        return Ok(events);
+        var eventEntities = new GetEventEntityDto()
+        {
+            Entities = events,
+            UserId = userId
+        };
+        return View(eventEntities);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetEventById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var eventEntity = await eventService.GetByIdAsync(id);
         if (eventEntity == null)
@@ -27,33 +31,35 @@ public class EventController(IEventService eventService) : Controller
     }
 
     [HttpGet]
+    [Authorize]
     public IActionResult Create()
     {
         return View();
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] EventDto eventDto)
+    [Authorize]
+    public async Task<IActionResult> Create(CreateEventDto eventDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        await eventService.AddAsync(eventDto);
-
-        return CreatedAtAction(nameof(GetEventById), new { id = eventDto.EventId }, eventDto);
+        var userId = GetCurrentUserId();
+        eventDto.OrganizerId = userId;
+        var eventId = await eventService.AddAsync(eventDto);
+        return Redirect("/event/getAll");
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventDto eventDto)
+    [Authorize]
+    public async Task<IActionResult> UpdateEvent(int id,  EventDto eventDto)
     {
-        if (!ModelState.IsValid || id != eventDto.EventId)
-            return BadRequest(ModelState);
-
-        await eventService.UpdateAsync(eventDto);
+        await eventService.UpdateAsync(eventDto, id);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteEvent(int id)
     {
         var eventExists = await eventService.GetByIdAsync(id);

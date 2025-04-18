@@ -6,13 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace Event_Management_System.Controllers;
 
 [Authorize]
-public class SubscribeController(RegistrationService registrationService):Controller
+public class SubscribeController(IRegistrationService registrationService) : BaseController
 {
-    [HttpPost ("Subscribe")]
-    public async Task<IActionResult> AddAsync([FromBody] EventRegistrationDto registrationDto)
+    [HttpGet("/event/subscribe/{id:int}/user/{userId:guid}")]
+    public async Task<IActionResult> AddAsync(int id, Guid userId)
     {
+        var registrationDto = new EventRegistrationDto()
+        {
+            EventId = id,
+            UserId = userId
+        };
         await registrationService.AddAsync(registrationDto);
-        return Ok("Event registration successfully added");
+        return Redirect("/event/getAll");
     }
 
     [HttpDelete("Unsubscribe")]
@@ -39,6 +44,5 @@ public class SubscribeController(RegistrationService registrationService):Contro
     //         return Ok("Successfully subscribed.");
     //     }
     // }
-    
 }
 

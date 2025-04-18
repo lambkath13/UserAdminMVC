@@ -6,5 +6,7 @@ public class CreateEventDto
     public string Description { get; set; } = null!;
     public DateTime EventDate { get; set; }
     public string? Location { get; set; }
-    public string OrganizerId { get; set; } = null!;
+    public IFormFile File { get; set; }
+    public Guid? OrganizerId { get; set; }
+    public int Status { get; set; }
 }

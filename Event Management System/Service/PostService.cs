@@ -5,43 +5,36 @@ using Event_Management_System.Repository;
 
 namespace Event_Management_System.Service;
 
-public class PostService:IPostService
+public class PostService(IPostRepository postRepository, IMapper mapper, IUserRepository userRepository) : IPostService
 {
-    private readonly IPostRepository _postRepository;
-    private readonly IMapper _mapper;
-
-    public PostService(IPostRepository postRepository, IMapper mapper)
+    public async Task<IEnumerable<PostDto>> GetAllAsync(Guid? userId)
     {
-        _mapper = mapper;
-        _postRepository = postRepository;
-    }
-
-    public async Task<IEnumerable<PostDto>> GetAllAsync()
-    {
-        var posts= await _postRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<PostDto>>(posts);
+        var user = await userRepository.GetByIdAsync(userId);
+        
+        var posts= await postRepository.GetAllAsync(userId, user?.Role);
+        return mapper.Map<IEnumerable<PostDto>>(posts);
     }
 
     public async Task<PostDto?> GetByIdAsync(int id)
     {
-        var postEntity = await _postRepository.GetByIdAsync(id);
-        return _mapper.Map<PostDto>(postEntity);
+        var postEntity = await postRepository.GetByIdAsync(id);
+        return mapper.Map<PostDto>(postEntity);
     }
 
     public async Task AddAsync(PostDto postDto)
     {
-        var postEntity = _mapper.Map<Post>(postDto);
-        await _postRepository.AddAsync(postEntity);
+        var postEntity = mapper.Map<Post>(postDto);
+        await postRepository.AddAsync(postEntity);
     }
 
     public async Task UpdateAsync(PostDto postDto)
     {
-        var postEntity = _mapper.Map<Post>(postDto);
-        await _postRepository.UpdateAsync(postEntity);
+        var postEntity = mapper.Map<Post>(postDto);
+        await postRepository.UpdateAsync(postEntity);
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _postRepository.DeleteAsync(id);
+        await postRepository.DeleteAsync(id);
     }
 }

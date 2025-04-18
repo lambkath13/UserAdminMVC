@@ -14,7 +14,7 @@ public class PostController(IPostService postService, IImageService imageService
     public async Task<IActionResult> GetAll()
     {
         var userId = GetCurrentUserId();
-        var posts = await postService.GetAllAsync();
+        var posts = await postService.GetAllAsync(userId);
         return View(posts);
     }
 

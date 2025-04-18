@@ -40,7 +40,8 @@ namespace Event_Management_System.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     EventDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    File = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,7 +163,7 @@ namespace Event_Management_System.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarUrl", "Email", "IsFirstAdmin", "Name", "PassportId", "PasswordHash", "Role" },
-                values: new object[] { new Guid("fc4552da-13bc-479c-94a5-b816fd2ca4ca"), null, "admin@example.com", true, "Admin", "ADMIN123456", "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu", 1 });
+                values: new object[] { new Guid("fc4552da-13bc-479c-94a5-b816fd2ca4ca"), null, "admin@example.com", true, "Admin", "ADMIN123456", "$2b$10$QjPm39leFRKCOULaXj4ej.oQ8f4sUb6ITpPWBrZteQgGYb/y83SJu", 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventFeedbacks_EventId",

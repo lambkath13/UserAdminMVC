@@ -2,6 +2,6 @@
 
 public enum EventStatus
 {
-    Active,
+    Active = 1,
     Completed
 }

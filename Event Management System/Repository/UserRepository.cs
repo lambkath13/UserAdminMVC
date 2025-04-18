@@ -15,8 +15,10 @@ public class UserRepository( AppDbContext context)
         return await context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid? id)
     {
+        if (id == null) return null;
+        
         return await context.Users.FirstOrDefaultAsync(x=> x.Id == id);
     }
 

@@ -5,9 +5,9 @@ namespace Event_Management_System.Service;
 
 public interface IEventService
 {
-    Task<IEnumerable<EventDto>> GetAllAsync();
+    Task<List<GetAllEventDto>> GetAllAsync();
     Task<EventDto?> GetByIdAsync(int id);
-    Task AddAsync(EventDto eventDto);
-    Task UpdateAsync(EventDto eventDto);
+    Task<int> AddAsync(CreateEventDto eventDto);
+    Task UpdateAsync(EventDto eventDto, int id);
     Task DeleteAsync(int id);
 }

@@ -19,6 +19,9 @@ public class UserController(IUserService userService) : BaseController
     public async Task<IActionResult> Me()
     {
         var userId = GetCurrentUserId();
+        if (userId == null)
+            return Redirect("/login");
+       
         var userEntity = await userService.GetByIdAsync(userId);
        
         if (userEntity == null)

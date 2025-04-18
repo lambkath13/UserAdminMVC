@@ -5,7 +5,7 @@ namespace Event_Management_System.Service;
 
 public interface IPostService
 {
-    Task<IEnumerable<PostDto>> GetAllAsync();
+    Task<IEnumerable<PostDto>> GetAllAsync(Guid? userId);
     Task<PostDto?> GetByIdAsync(int id);
     Task AddAsync(PostDto postDto);
     Task UpdateAsync(PostDto postDto);

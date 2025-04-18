@@ -26,6 +26,7 @@ namespace Event_Management_System.Models
 
         [Required]
         public Guid UserId { get; set; }
+        public string File { get; set; }
         public User User { get; set; }
 
         public List<EventFeedback> EventFeedbacks { get; set; } = null!;

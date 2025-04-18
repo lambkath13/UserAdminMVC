@@ -4,31 +4,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event_Management_System.Repository;
 
-public class RegistrationRepository:IRegistrationRepository
+public class RegistrationRepository(AppDbContext context) : IRegistrationRepository
 {
-    private readonly AppDbContext _context;
     
     public async Task AddAsync(EventRegistration registration)
     {
-        var exist = await _context.EventRegistrations
+        var exist = await context.EventRegistrations
             .AnyAsync(r => r.EventId == registration.EventId && r.UserId == registration.UserId);
         
         if (exist)  
             return; //если он Submit то ничего не делаем
         
-        await _context.EventRegistrations.AddAsync(registration);
-        await _context.SaveChangesAsync();    
+        await context.EventRegistrations.AddAsync(registration);
+        await context.SaveChangesAsync();    
     }
 
-    public async Task RemoveAsync(int eventId, Guid userId)
+    public async Task RemoveAsync(EventRegistration registration)
     {
-        var registration = await _context.EventRegistrations
-            .FirstOrDefaultAsync(r => r.EventId == eventId && r.UserId == userId);
-        
-        if (registration != null)
-        {
-            _context.EventRegistrations.Remove(registration);
-            await _context.SaveChangesAsync();
-        }
+      
+            context.EventRegistrations.Remove(registration);
+            await context.SaveChangesAsync();
+    }
+
+    public bool GetByEventId(int argId)
+    {
+        return context.EventRegistrations.Any(x => x.EventId == argId);
+    }
+
+    public Task<EventRegistration?> GetByUserIdAndEventId(Guid registrationDtoUserId, int registrationDtoEventId)
+    {
+        return context.EventRegistrations.FirstOrDefaultAsync(x => x.UserId == registrationDtoUserId && x.EventId == registrationDtoEventId); 
     }
 }
