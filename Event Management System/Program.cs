@@ -45,7 +45,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //await dataContext.Database.EnsureDeletedAsync();
+   // await dataContext.Database.EnsureDeletedAsync();
     await dataContext.Database.MigrateAsync();
 }
 

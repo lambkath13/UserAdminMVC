@@ -1,4 +1,5 @@
-﻿using Event_Management_System.Enums;
+﻿using Event_Management_System.Dto.Post;
+using Event_Management_System.Enums;
 
 namespace Event_Management_System.Dto.Event;
 
@@ -15,6 +16,7 @@ public class EventDto
     public Guid? UserId { get; set; }
     public List<EventUserDto>? Users { get; set; }
     public List<EventFeedbackDto>? Feedbacks{ get; set; }
+    public List<PostDto>? Posts { get; set; }
 }
 
 public class EventUserDto

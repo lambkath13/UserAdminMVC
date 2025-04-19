@@ -11,11 +11,13 @@
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3 mb-3">
                     <div class="card component-card_2">
                         <a asp-action="GetById" asp-controller="Event" asp-route-id="@eventDto.Id">
-                            <img src="/image/@eventDto.File" class="card-img-top" alt="widget-card-2">
+                            <img src="/image/@eventDto.File" class="card-img-top" alt="Event Image">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title"><a href="">@eventDto.Title</a></h5>
-                            <p class="card-text">@eventDto.Description</p>
+                            <h5 class="card-title">
+                                <a href="" class="text-primary" style="font-weight: bold; font-size: 1.2rem;">@eventDto.Title</a>
+                            </h5>
+                            <p class="card-text text-muted" style="font-style: italic;">@eventDto.Description</p>
                             <div class="card-star_rating mb-2">
                                 @for (int i = 1; i <= 5; i++)
                                 {
@@ -29,17 +31,26 @@
                                     }
                                 }
                             </div>
-                            @if (Model.UserId != null && eventDto.IsSubscribe == false)
+                            @if (Model.UserId == null && eventDto.OrganizerId != Model.UserId || Model.UserId != null && eventDto.OrganizerId != Model.UserId)
                             {
-                                <button class="btn btn-primary" id="subscribeButton" data-event-id="@eventDto.Id" data-user-id="@Model.UserId">Subscribe</button>
-                            }
-                            @if (Model.UserId != null && eventDto.IsSubscribe)
-                            {
-                                <button class="btn btn-danger" id="subscribeButton" data-event-id="@eventDto.Id" data-user-id="@Model.UserId">Unsubscribe</button>
-                            }
-                            @if (Model.UserId == null)
-                            {
-                                <a href="/auth/Register" class="btn btn-primary">Subscribe</a>
+                                @if (Model.UserId != null && eventDto.IsSubscribe == false)
+                                {
+                                    <button class="btn btn-primary" id="subscribeButton" data-event-id="@eventDto.Id" data-user-id="@Model.UserId" style="border-radius: 20px; padding: 10px 20px; font-weight: bold;">
+                                        Subscribe to Event
+                                    </button>
+                                }
+
+                                @if (Model.UserId != null && eventDto.IsSubscribe)
+                                {
+                                    <button class="btn btn-danger" id="subscribeButton" data-event-id="@eventDto.Id" data-user-id="@Model.UserId" style="border-radius: 20px; padding: 10px 20px; font-weight: bold;">
+                                        Unsubscribe
+                                    </button>
+                                }
+
+                                @if (Model.UserId == null)
+                                {
+                                    <a href="/auth/Register" class="btn btn-primary" style="border-radius: 20px; padding: 10px 20px; font-weight: bold;">Sign Up to Subscribe</a>
+                                }
                             }
                         </div>
                     </div>
@@ -55,21 +66,21 @@
                     @if (Model.PageNumber > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber - 1)">Prev</a>
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber - 1)" style="font-weight: bold;">Previous</a>
                         </li>
                     }
 
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
                         <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@i">@i</a>
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@i" style="font-weight: bold;">@i</a>
                         </li>
                     }
 
                     @if (Model.PageNumber < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber + 1)" style="font-weight: bold;">Next</a>
                         </li>
                     }
                 </ul>

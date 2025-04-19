@@ -12,7 +12,7 @@ public class PostRepository(AppDbContext context) : IPostRepository
     {
         query = query?.ToLower();
 
-        return await context.Posts
+        return await context.Posts.Include(x=>x.User).Include(x=>x.Event)
             .Where(x =>
                 (
                     (userId != null && x.UserId == userId) ||

@@ -174,9 +174,6 @@ namespace Event_Management_System.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EnventId")
-                        .HasColumnType("int");
-
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 

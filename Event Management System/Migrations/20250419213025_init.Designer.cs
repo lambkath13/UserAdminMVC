@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event_Management_System.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250419184915_init")]
+    [Migration("20250419213025_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -176,9 +176,6 @@ namespace Event_Management_System.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EnventId")
-                        .HasColumnType("int");
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");

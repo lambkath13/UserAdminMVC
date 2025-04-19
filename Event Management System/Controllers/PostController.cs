@@ -42,7 +42,7 @@ public class PostController(IPostService postService, IImageService imageService
     }
    
     [HttpPost]
-    public async Task<IActionResult> Create([FromForm] CreatePostDto createPostDto)
+    public async Task<IActionResult> Create(CreatePostDto createPostDto)
     {
         if (!ModelState.IsValid)
             return View(createPostDto);
@@ -51,17 +51,18 @@ public class PostController(IPostService postService, IImageService imageService
         {
             UserId = createPostDto.UserId,
             Content = createPostDto.Content,
+            EventId = createPostDto.EventId,
             CreatedAt = DateTime.Now,
             ImageUrl = await imageService.AddFileAsync(nameof(Post), createPostDto.Image)
         });
         
-        return Redirect("/post/getAll");
+        return RedirectToAction("GetById", "Event", new { id = createPostDto.EventId });
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] PostDto postDto)
     {
-        if (!ModelState.IsValid || id != postDto.PostId)
+        if (!ModelState.IsValid || id != postDto.Id)
             return BadRequest(ModelState);
 
         await postService.UpdateAsync(postDto);

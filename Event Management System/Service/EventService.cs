@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Event_Management_System.Dto.Event;
+using Event_Management_System.Dto.Post;
 using Event_Management_System.Models;
 using Event_Management_System.Repository;
 
@@ -68,6 +69,16 @@ public class EventService(IEventRepository eventRepository, IMapper mapper, IIma
                     Id = x.UserId,
                     FullName = x.User.Name
                 }
+            }).ToList(),
+            Posts = eventEntity.Posts.Select(x=> new PostDto()
+            {
+                Id = x.Id,
+                Content = x.Content,
+                CreatedAt = x.CreatedAt,
+                EventId = x.EventId,
+                ImageUrl = x.ImageUrl,
+                UserId = x.UserId,
+                UserName = x.User.Name
             }).ToList()
         };
     }

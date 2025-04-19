@@ -41,6 +41,8 @@ public class EventRepository(AppDbContext context) : IEventRepository
             .ThenInclude(x=>x.User)
             .Include(x=>x.EventRegistrations)
             .ThenInclude(x=>x.User)
+            .Include(x=>x.Posts)
+            .ThenInclude(x=>x.User)
             .FirstOrDefaultAsync(x=>x.Id == id);
     }
     public async Task<int> AddAsync(Event eventEntity)

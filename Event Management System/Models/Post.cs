@@ -12,7 +12,7 @@ public class Post
     [MaxLength(500)]
     public string Content { get; set; } = null!;
 
-    public int EnventId { get; set; }
+    public int EventId { get; set; }
     
     [MaxLength(500)]
     public required string ImageUrl { get; set; }

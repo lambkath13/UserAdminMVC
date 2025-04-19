@@ -12,7 +12,17 @@ public class PostService(IPostRepository postRepository, IMapper mapper, IUserRe
         var user = await userRepository.GetByIdAsync(userId);
         
         var posts= await postRepository.GetAllAsync(userId, user?.Role, query);
-        return mapper.Map<IEnumerable<PostDto>>(posts);
+        return posts.Select(x=> new PostDto()
+        {
+            Id = x.Id,
+            Content = x.Content,
+            CreatedAt = x.CreatedAt,
+            EventId = x.EventId,
+            ImageUrl = x.ImageUrl,
+            UserId = x.UserId,
+            UserName = x.User.Name,
+            EventTitle = x.Event.Title
+        });
     }
 
     public async Task<PostDto?> GetByIdAsync(int id)
