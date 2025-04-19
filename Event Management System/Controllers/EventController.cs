@@ -9,16 +9,21 @@ namespace Event_Management_System.Controllers;
 public class EventController(IEventService eventService) : BaseController
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll(string? query)
+    public async Task<IActionResult> GetAll(string? query, int pageNumber = 1, int pageSize = 12)
     {
         var userId = GetCurrentUserId();
-        var events = await eventService.GetAllAsync(userId, query);
-        var eventEntities = new GetEventEntityDto()
+        var events = await eventService.GetAllAsync(userId, query, pageNumber, pageSize);
+
+        var model = new GetEventEntityDto
         {
-            Entities = events,
-            UserId = userId
+            Entities = events.Item1,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = events.Item2,
+            UserId = GetCurrentUserId(), // если нужно
         };
-        return View(eventEntities);
+
+        return View(model);
     }
     
     [HttpGet]
@@ -58,7 +63,7 @@ public class EventController(IEventService eventService) : BaseController
     public async Task<IActionResult> Create(CreateEventDto eventDto)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            return View(eventDto);
 
         var userId = GetCurrentUserId();
         eventDto.OrganizerId = userId;

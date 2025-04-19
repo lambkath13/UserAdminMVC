@@ -8,7 +8,7 @@ namespace Event_Management_System.Repository;
 
 public class EventRepository(AppDbContext context) : IEventRepository
 {
-    public async Task<IEnumerable<Event>> GetAllAsync(Guid? userId, string? query)
+    public async Task<(List<Event>, int)> GetAllAsync(Guid? userId, string? query, int pageNumber, int pageSize)
     {
         var events = context.Events
             .Include(x => x.EventFeedbacks)
@@ -25,8 +25,13 @@ public class EventRepository(AppDbContext context) : IEventRepository
                 x.Title.ToLower().Contains(loweredQuery)
             );
         }
+        
+        var pagedEvents = await events
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-        return await events.ToListAsync();
+        return (pagedEvents, await events.CountAsync());
     }
 
     public async Task<Event?> GetByIdAsync(int id)

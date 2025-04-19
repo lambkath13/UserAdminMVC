@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Event_Management_System.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace Event_Management_System.Models
 {

@@ -1,0 +1,65 @@
+@model Event_Management_System.Dto.User.CreateUserDto
+
+@{
+    ViewBag.Title = "Create User";
+    Layout = "_Layout";
+}
+<div class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Add user</h4>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <form enctype="multipart/form-data" asp-action="Create" asp-controller="User" method="post">
+                <div style="color: red" asp-validation-summary="ModelOnly"></div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlInput2">Name</label>
+                    <span class="text-danger" asp-validation-for="Name"></span>
+                    <input type="text" asp-for="Name" class="form-control" id="exampleFormControlInput2" placeholder="Enter name">
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlInput2">PassportId</label>
+                    <span class="text-danger" asp-validation-for="PassportId"></span>
+                    <input type="text" asp-for="PassportId" class="form-control" id="exampleFormControlInput2" placeholder="Enter passportId">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlSelect1">Role</label>
+                    <span class="text-danger" asp-validation-for="Role"></span>
+
+                    <select asp-for="Role" class="form-control" id="exampleFormControlSelect1">
+                        <option value="">-- Select event role --</option>
+                        <option value="2">Admin</option>
+                        <option value="1">Student</option>
+                    </select>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label for="locationInput">Email</label>
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                    <input type="email" asp-for="Email" class="form-control" id="locationInput" placeholder="Enter email">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlInput2">Password</label>
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                    <input type="password" asp-for="Password" class="form-control" id="exampleFormControlInput2" placeholder="Enter password">
+                </div>
+
+                <div class="form-group mb-4 mt-3">
+                    <label for="exampleFormControlFile1">User Avatar</label>
+                    <span class="text-danger" asp-validation-for="AvatarUrl"></span>
+                    <input asp-for="AvatarUrl" type="file" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+
+                <input type="submit" value="Create User" class="mt-4 mb-4 btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>

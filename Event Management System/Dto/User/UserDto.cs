@@ -11,4 +11,5 @@ public class UserDto
     public string PasswordHash { get; set; }
     public string Email { get; set; } = null!;
     public UserRole Role { get; set; }
+    public bool IsFirstAdmin { get; set; } = false;
 }

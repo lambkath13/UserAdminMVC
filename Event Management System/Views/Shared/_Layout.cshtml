@@ -64,8 +64,6 @@
 
         notifications = await _context.Notifications.OrderByDescending(x=>x.CreatedAt).Take(3).ToListAsync();
     }
-    
-    
 
 }
 <!-- BEGIN LOADER -->
@@ -312,27 +310,32 @@
                     </ul>
                 </li>
 
-                <li class="menu">
-                    <a href="#elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <div class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                            <span>Posts</span>
-                        </div>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                        </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled" id="elements" data-parent="#accordionExample">
-                        <li>
-                            <a href="/post/getAll"> List </a>
-                        </li>
-                        <li>
-                            <a href="/post/create"> Add </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="menu">
+                @if (user is { Role: UserRole.Admin })
+                {
+                    <li class="menu">
+                        <a href="#elements" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                <span>Posts</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled" id="elements" data-parent="#accordionExample">
+                            <li>
+                                <a href="/post/getAll"> List </a>
+                            </li>
+                            <li>
+                                <a href="/post/create"> Add </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                
+                @if (user is { Role: UserRole.Admin })
+                {
+                   <li class="menu">
                     <a href="#app" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -349,7 +352,7 @@
                                 <line x1="1" y1="9" x2="4" y2="9"></line>
                                 <line x1="1" y1="14" x2="4" y2="14"></line>
                             </svg>
-                            <span>Categories</span>
+                            <span>Users</span>
                         </div>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -361,17 +364,14 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="app" data-parent="#accordionExample">
                         <li>
-                            <a href="apps_chat.html"> List </a>
+                            <a href="/user/getAll"> List </a>
                         </li>
                         <li>
-                            <a href="apps_mailbox.html"> Add </a>
-                        </li>
-
-                        <li>
-                            <a href="/auth/login"> Login </a>
+                            <a href="/user/create"> Add </a>
                         </li>
                     </ul>
                 </li>
+                }
             </ul>
             <!-- <div class="shadow-bottom"></div> -->
         </nav>

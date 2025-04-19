@@ -174,6 +174,12 @@ namespace Event_Management_System.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EnventId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -183,6 +189,8 @@ namespace Event_Management_System.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.HasIndex("UserId");
 
@@ -322,11 +330,19 @@ namespace Event_Management_System.Migrations
 
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>
                 {
+                    b.HasOne("Event_Management_System.Models.Event", "Event")
+                        .WithMany("Posts")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Event_Management_System.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Event");
 
                     b.Navigation("User");
                 });
@@ -354,6 +370,8 @@ namespace Event_Management_System.Migrations
                     b.Navigation("EventFeedbacks");
 
                     b.Navigation("EventRegistrations");
+
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("Event_Management_System.Models.Post", b =>

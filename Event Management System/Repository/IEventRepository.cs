@@ -4,7 +4,7 @@ namespace Event_Management_System.Repository;
 
 public interface IEventRepository
 {
-    Task<IEnumerable<Event>> GetAllAsync(Guid? userId, string? query);
+    Task<(List<Event>, int)> GetAllAsync(Guid? userId, string? query, int pageNumber, int pageSize);
     Task<Event?> GetByIdAsync(int id);
     Task<int> AddAsync(Event eventEntity);
     Task UpdateAsync(Event eventEntity);

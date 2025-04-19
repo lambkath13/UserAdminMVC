@@ -5,7 +5,7 @@ namespace Event_Management_System.Service;
 
 public interface IEventService
 {
-    Task<List<GetAllEventDto>> GetAllAsync(Guid? userId, string? query);
+    Task<(List<GetAllEventDto>, int)> GetAllAsync(Guid? userId, string? query, int pageNumber, int pageSize);
     Task<EventDto?> GetByIdAsync(int id);
     Task<int> AddAsync(CreateEventDto eventDto);
     Task UpdateAsync(UpdateEventDto eventDto);

@@ -39,7 +39,7 @@ public class AuthController(IUserService userService, IMapper mapper, IHttpConte
 
         await userService.AddAsync(user);
         
-        await Authenticate(user.PassportId, user.Id);
+        await Authenticate(user.PassportId, user.Id, user.Role);
        
         return RedirectToAction("Index", "Home");
     }
@@ -66,17 +66,18 @@ public class AuthController(IUserService userService, IMapper mapper, IHttpConte
             return View(loginRequest);
         }
 
-        await Authenticate(user.PassportId, user.Id);
+        await Authenticate(user.PassportId, user.Id, user.Role);
 
         return RedirectToAction("Index", "Home");
     }
     
-    private async Task Authenticate(string passportId, Guid userId)
+    private async Task Authenticate(string passportId, Guid userId, UserRole role)
     {
         var claims = new List<Claim>
         {
             new Claim(ClaimsIdentity.DefaultNameClaimType, passportId),
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(ClaimTypes.Role, role.ToString())
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

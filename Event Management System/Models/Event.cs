@@ -31,6 +31,8 @@ namespace Event_Management_System.Models
 
         public List<EventFeedback> EventFeedbacks { get; set; }
         public List<EventRegistration> EventRegistrations { get; set; }
+        
+        public List<Post> Posts { get; set; }
     }
 
     

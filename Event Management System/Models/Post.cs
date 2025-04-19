@@ -11,6 +11,8 @@ public class Post
     [Required]
     [MaxLength(500)]
     public string Content { get; set; } = null!;
+
+    public int EnventId { get; set; }
     
     [MaxLength(500)]
     public required string ImageUrl { get; set; }
@@ -20,6 +22,7 @@ public class Post
     
     public Guid UserId { get; set; }
     public User User { get; set; } = null!;
-    
+
+    public Event Event { get; set; }
     public List<PostComment> PostComments { get; set; } = null!;
 }

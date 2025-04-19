@@ -9,9 +9,23 @@ namespace Event_Management_System.Repository;
 public class UserRepository( AppDbContext context)
     : IUserRepository
 {
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<(List<User>, int)> GetAllAsync(string? query, int pageNumber = 1, int pageSize = 12)
     {
-        return await context.Users.ToListAsync();
+        var queryable = context.Users.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            var loweredQuery = query.ToLower();
+            queryable = queryable.Where(x =>
+                x.Name.ToLower().Contains(loweredQuery)
+            );
+        }
+        
+        var users = await queryable
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (users, await queryable.CountAsync());
     }
 
     public async Task<User?> GetByIdAsync(Guid? id)
@@ -47,8 +61,13 @@ public class UserRepository( AppDbContext context)
        return await context.Users.FirstOrDefaultAsync(x=> x.PassportId == passportId);
     }
 
-    public async Task<User> GetByName(string name)
+    public async Task<User?> GetByName(string name)
     {
         return await context.Users.FirstOrDefaultAsync(x=> x.Name == name);
+    }
+
+    public Task<User?> GetByEmail(string userEmail)
+    {
+        return context.Users.FirstOrDefaultAsync(x=> x.Email == userEmail);
     }
 }

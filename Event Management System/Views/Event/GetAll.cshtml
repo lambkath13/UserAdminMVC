@@ -21,11 +21,11 @@
                                 {
                                     if (i <= eventDto.Rating)
                                     {
-                                        <span style="color: gold;">&#9733;</span> @* Filled star ★ *@
+                                        <span style="color: gold;">&#9733;</span>
                                     }
                                     else
                                     {
-                                        <span style="color: lightgray;">&#9733;</span> @* Empty-looking star in gray *@
+                                        <span style="color: lightgray;">&#9733;</span>
                                     }
                                 }
                             </div>
@@ -46,5 +46,34 @@
                 </div>
             }
         </div>
+
+        <!-- PAGINATION SECTION -->
+        @if (Model.TotalCount > 12)
+        {
+            <div class="paginating-container pagination-default mt-4">
+                <ul class="pagination justify-content-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber - 1)">Prev</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@i">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.PageNumber < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="GetAll" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 </div>

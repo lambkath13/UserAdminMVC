@@ -7,10 +7,11 @@ namespace Event_Management_System.Service;
 
 public class EventService(IEventRepository eventRepository, IMapper mapper, IImageService imageService, IRegistrationRepository registrationRepository, INotificationRepository notificationRepository) : IEventService
 {
-    public async Task<List<GetAllEventDto>> GetAllAsync(Guid? userId, string? query)
+    public async Task<(List<GetAllEventDto>, int)> GetAllAsync(Guid? userId, string? query, int pageNumber, int pageSize)
     {
-        var events = await eventRepository.GetAllAsync(userId, query);
-        return events.Select(x=> new GetAllEventDto()
+        var (entities, totalCount) = await eventRepository.GetAllAsync(userId, query, pageNumber, pageSize);
+
+        var result = entities.Select(x => new GetAllEventDto
         {
             Id = x.Id,
             Title = x.Title,
@@ -23,6 +24,8 @@ public class EventService(IEventRepository eventRepository, IMapper mapper, IIma
             IsSubscribe = registrationRepository.GetByEventId(x.Id),
             Rating = CalculateAverageRating(x.EventFeedbacks)
         }).ToList();
+
+        return (result, totalCount);
     }
     
     private double CalculateAverageRating(List<EventFeedback>? feedbacks)

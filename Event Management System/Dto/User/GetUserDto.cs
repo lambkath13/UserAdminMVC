@@ -1,8 +1,8 @@
-namespace Event_Management_System.Dto.Event;
+namespace Event_Management_System.Dto.User;
 
-public class GetEventEntityDto
+public class GetUserDto
 {
-    public List<GetAllEventDto> Entities { get; set; }
+    public List<UserDto> Entities { get; set; }
     public Guid? UserId { get; set; }
     
     public int PageNumber { get; set; }
