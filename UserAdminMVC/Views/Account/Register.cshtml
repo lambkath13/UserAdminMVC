@@ -4,7 +4,6 @@
 
 <h2 class="text-center mb-4">Register</h2>
 
-<!-- Подсказки по требованиям к паролю -->
 <div class="alert alert-info">
     <strong>Password must contain:</strong>
     <ul class="mb-0">
@@ -30,6 +29,17 @@
         <input name="displayName" class="form-control" required />
     </div>
     <button type="submit" class="btn btn-primary w-100 mb-2">Register</button>
+    
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger mt-3">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        </div>
+    }
+
 </form>
 
 <div class="text-center mt-3">
