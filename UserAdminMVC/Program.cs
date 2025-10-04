@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using UserAdminMVC.Data;
 using UserAdminMVC.Models;
@@ -31,15 +33,27 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(o =>
+{
+    o.LoginPath = "/Account/Login";        
+    o.AccessDeniedPath = "/Account/Login"; 
+    o.SlidingExpiration = true;
+});
 // note: add MVC controllers with views
-builder.Services.AddControllersWithViews();
-
+builder.Services.AddControllersWithViews(o =>
+{
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    o.Filters.Add(new AuthorizeFilter(policy)); // Global authenthification
+});
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
+
 
 // important: standard middleware pipeline for MVC + Identity
 app.UseHttpsRedirection();

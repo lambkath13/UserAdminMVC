@@ -51,20 +51,29 @@ public class AuthService : IAuthService
     // note: login checks user credentials and updates LastLoginAt timestamp
     public async Task<(bool ok, string? error)> LoginAsync(string email, string password, bool remember)
     {
-        // nota bene: PasswordSignInAsync uses email as userName (Identity default behavior)
-        var res = await _signIn.PasswordSignInAsync(email, password, remember, lockoutOnFailure: false);
-        if (!res.Succeeded) 
-            return (false, "Invalid credentials.");
-
+        // note: try to find user by e-mail first
         var user = await _users.FindByEmailAsync(email);
-        if (user != null)
+        if (user == null)
         {
-            // important: track last successful login time
-            user.LastLoginAt = DateTime.UtcNow;
-            await _db.SaveChangesAsync();
+            // important: return clear message if user not found
+            return (false, "User with this e-mail is not registered.");
         }
+
+        // note: attempt to sign in using Identity's PasswordSignInAsync
+        var res = await _signIn.PasswordSignInAsync(email, password, remember, lockoutOnFailure: false);
+        if (!res.Succeeded)
+        {
+            // important: wrong password or account blocked (Identity check fails)
+            return (false, "Invalid password or account blocked.");
+        }
+
+        // important: update last login timestamp for successful login
+        user.LastLoginAt = DateTime.UtcNow;
+        await _db.SaveChangesAsync();
+
         return (true, null);
     }
+
 
     // note: clears authentication cookie and session
     public Task LogoutAsync() => _signIn.SignOutAsync();

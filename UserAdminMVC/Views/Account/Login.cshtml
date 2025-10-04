@@ -5,6 +5,20 @@
 <h2 class="text-center mb-4">Login</h2>
 
 @if (!string.IsNullOrEmpty(ViewBag.Msg)) {
+    <div class="alert alert-warning text-center">@ViewBag.Msg</div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger text-center">
+        @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@err.ErrorMessage</div>
+        }
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Msg)) {
     <div class="alert alert-warning">Your session is not valid or you are blocked.</div>
 }
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserAdminMVC.Service;
 
@@ -11,10 +12,12 @@ public class AccountController : Controller
     public AccountController(IAuthService auth) => _auth = auth;
 
     // important: registration form view (GET)
+    [AllowAnonymous] 
     [HttpGet] 
     public IActionResult Register() => View();
 
     // nota bene: registration submits form data and passes to AuthService
+    [AllowAnonymous] 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(string email, string password, string displayName)
     {
@@ -31,6 +34,7 @@ public class AccountController : Controller
     }
 
     // note: login form view (GET)
+    [AllowAnonymous] 
     [HttpGet] 
     public IActionResult Login(string? msg) 
     { 
@@ -39,6 +43,7 @@ public class AccountController : Controller
     }
 
     // nota bene: verifies user credentials and creates authentication cookie
+    [AllowAnonymous] 
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string email, string password, bool rememberMe)
     {
