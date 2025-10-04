@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UserAdminMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29e4e34c8b9494fdfabfa2fa00ad5024bdc068f4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+756f6acb1b300917bdb8047d4fa3359f3834bd79")]
 [assembly: System.Reflection.AssemblyProductAttribute("UserAdminMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UserAdminMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

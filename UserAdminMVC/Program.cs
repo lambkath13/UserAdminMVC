@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // important: configure database connection (SQL Server)
 builder.Services.AddDbContext<AppDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // note: disable frequent security stamp validation to prevent immediate logout after block
 builder.Services.Configure<SecurityStampValidatorOptions>(o =>
