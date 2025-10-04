@@ -33,16 +33,10 @@ public class UsersController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Block([FromForm] string[] userIds)
     {
-        // important: server-side protection — if current user already blocked → force logout
-        if (await _svc.IsCurrentUserBlockedOrMissingAsync(User))
-        {
-            await _auth.LogoutAsync();
-            return RedirectToAction("Login", "Account");
-        }
-
+        // Perform blocking of selected users
         await _svc.BlockAsync(userIds);
 
-        // note: if user blocked themselves — redirect to login immediately
+        // If the current user blocked themselves → logout immediately
         var meId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (meId != null && userIds.Contains(meId))
         {
@@ -50,8 +44,10 @@ public class UsersController : Controller
             return RedirectToAction("Login", "Account");
         }
 
+        // Otherwise, stay on the list page (middleware will handle logout on next action)
         return RedirectToAction(nameof(Index));
     }
+
 
     // 3. Unblock
     [HttpPost, ValidateAntiForgeryToken]
