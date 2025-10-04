@@ -13,9 +13,8 @@
 </div>
 
 <div class="table-responsive">
-  <!-- одна общая форма для всех действий -->
   <form method="post" id="usersForm">
-    @Html.AntiForgeryToken() <!-- нужен, потому что форма общая и без asp-action -->
+    @Html.AntiForgeryToken()
 
     <table class="table table-striped table-hover table-sm align-middle">
       <thead class="table-light">
@@ -64,12 +63,10 @@
 
 @section Scripts {
   <script>
-    // выбрать/снять всех
     document.getElementById('selectAll').addEventListener('change', e => {
       document.querySelectorAll('.sel').forEach(i => i.checked = e.target.checked);
     });
 
-    // проверка "кик только при действии"
     async function ensureAllowed() {
       try {
         const r = await fetch('/Users/Status', { method: 'GET', credentials: 'same-origin' });
@@ -81,7 +78,6 @@
       } catch { return false; }
     }
 
-    // навешиваем проверку на все кнопки действий внутри формы
     document.querySelectorAll('#usersForm button').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const ok = await ensureAllowed();
